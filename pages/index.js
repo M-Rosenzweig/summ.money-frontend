@@ -3,7 +3,7 @@
 export default function Home() {
   return (
     <>
-      {/* <h1>Lets Goooo Moish</h1> */}
+      <h1>Lets Goooo Moish</h1>
     </>
   );
 }

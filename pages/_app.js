@@ -3,7 +3,7 @@ import Head from "next/head";
 import Navbar from "../components/Navbar";
 import { NotificationProvider } from "web3uikit";
 import { MoralisProvider } from "react-moralis";
-import styles from "@/styles/Home.module.css";
+// import styles from "@/styles/Home.module.css";
 
 function App({ Component, pageProps }) {
   return (

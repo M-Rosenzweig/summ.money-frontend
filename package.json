@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.6",
     "graphql": "^16.4.0",
     "magic-sdk": "^13.1.0",
     "moralis": "^1.5.11",

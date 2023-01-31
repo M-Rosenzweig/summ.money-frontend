@@ -127,15 +127,12 @@ function createSummTerms() {
         </form>
         </div>
         <div id="gridChild2">
-        <div className="">
+        <div id="topRow" className="bg-blue-200">
           {Object.entries(formData).map(([key, value]) => {
-            if (value !== false) {
-              return <TermCard key={key} value={value} />;
-            }
-            return null;
+              return <TermCard key={key} value={value} termKey={key} />;
           })}
         </div>
-          <div id="topRow" className="bg-red-100"></div>
+          <div id="bottomRow" className="bg-red-100 flex-wrap"></div>
         </div>
       </div>
     </>

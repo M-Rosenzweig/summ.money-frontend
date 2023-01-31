@@ -30,7 +30,7 @@ function createSummTerms() {
 
   return (
     <>
-      <div className="flex flex-wrap bg-green-200">
+      <div className="flex flex-wrap bg-blue-200">
         <form className="bg-white ml-2 p-7 rounded-lg shadow-sm" onSubmit={handleSubmit}>
           <div className="mb-4 flex flex-wrap">
             <label className="block text-gray-700 font-medium mb-2" htmlFor="opponent">
@@ -118,7 +118,7 @@ function createSummTerms() {
           </button>
         </form>
 
-        <div className="flex flex-col">
+        <div className="">
           <TermCard/>
         </div>
 

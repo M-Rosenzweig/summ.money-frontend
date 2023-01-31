@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+#gridParent {
+  display: grid; 
+  grid-template-columns: 22% 78%;
+  background-color: white;
+  height: 100vh;
+}
+
+#gridChild2 {
+  display: grid;
+  grid-template-rows: 70vh 30vh;
+}
+
 #scale-in {
   -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

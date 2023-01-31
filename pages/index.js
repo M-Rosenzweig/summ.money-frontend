@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
-// useWeb3Contract moralis... to interact with contract.
 
 export default function Home() {
   const { isWeb3Enabled, account } = useMoralis();
+  // let account = "0x0000000000000000000000000000000000000000";
 
   // console.log(account);
   // console.log(isWeb3Enabled ? "Web3 is enabled" : "Web3 is not enabled");

@@ -1,45 +1,43 @@
 import React, { useState } from "react";
 import TermCard from "../../../components/TermCard";
 
-function createSummTerms() {
-    const [formData, setFormData] = useState({
-        opponent: "",
-        softOfferCap: "",
-        firmOfferCap: "",
-        softRange: "",
-        firmRange: "",
-        penaltyPercent: "",
-      });
+function createSummTermsV2() {
+  const [formData, setFormData] = useState({
+    opponent: "",
+    softOfferCap: "",
+    firmOfferCap: "",
+    softRange: "",
+    firmRange: "",
+    penaltyPercent: "",
+  });
 
-      const handleChange = (event) => {
-        setFormData({
-          ...formData,
-          [event.target.name]: event.target.value,
-        });
-      };
-    
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        // perform action with form data, e.g. sending it to a server
-        console.log(formData);
-    
-        // reset form data
-        setFormData({
-          opponent: "",
-          softOfferCap: "",
-          firmOfferCap: "",
-          softRange: "",
-          firmRange: "",
-          penaltyPercent: "",
-        });
-      };
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // perform action with form data, e.g. sending it to a server
+    console.log(formData);
+
+    // reset form data
+    setFormData({
+      opponent: "",
+      softOfferCap: "",
+      firmOfferCap: "",
+      softRange: "",
+      firmRange: "",
+      penaltyPercent: "",
+    });
+  };
 
   return (
     <>
-      <div id="gridParent" className="w-screen">
-      <div className="flex flex-wrap bg-white">
-        <form className="bg-white ml-1 p-7 rounded-lg shadow-md" onSubmit={handleSubmit}>
+      <div className="flex flex-wrap">
+        <form className="bg-white ml-2 p-7 rounded-lg shadow-md" onSubmit={handleSubmit}>
           <div className="mb-4 flex flex-wrap">
             <label className="block text-gray-700 font-medium mb-2" htmlFor="opponent">
               Opponent
@@ -125,18 +123,20 @@ function createSummTerms() {
             Submit
           </button>
         </form>
-        </div>
-        <div id="gridChild2">
-        <div id="topRow" className="bg-blue-200">
-          {Object.entries(formData).map(([key, value]) => {
-              return <TermCard key={key} value={value} termKey={key} />;
-          })}
-        </div>
-          <div id="bottomRow" className="bg-red-100 flex-wrap"></div>
+
+        <div className="flexParent">
+          <div className="flexChild">
+            {Object.entries(formData).map(([key, value]) => {
+              if (value !== false) {
+                return <TermCard key={key} value={value} termKey={key} />;
+              }
+              return null;
+            })}
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default createSummTerms;
+export default createSummTermsV2;

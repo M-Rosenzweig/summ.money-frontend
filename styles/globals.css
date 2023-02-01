@@ -14,9 +14,31 @@
   grid-template-rows: 70vh 30vh;
 }
 
-#topRow {
-   
+#parentWrap {
+   /* overflow: hidden; */
+  width: fit-content;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: rows; 
+  /* background-color: red; */
+}
 
+.flexParent{
+  display: flex;
+  flex-wrap: wrap; 
+  /* flex-direction: rows;  */
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: black;  */
+  width:75vw; 
+}
+
+.flexChild{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: rows;
 }
 
 #bottomRow{

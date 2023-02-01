@@ -1,7 +1,19 @@
 import React, { useState } from "react";
 import TermCard from "../../../components/TermCard";
+import { useMoralis, useWeb3Contract } from "react-moralis"
+import networkMapping from "../../../constants/networkMapping.json";
+import SummFactoryAbi from "../../../constants/SummFactory.json"; 
+import SummTermsAbi from "../../../constants/SummTerms.json"
+
+// import {ethers} from "ethers"; 
+
 
 function createSummTermsV2() {
+  const {chainId, account, isWeb3Enabled} = useMoralis();
+  const {runContractFunction} = useWeb3Contract();  
+  const chainString = chainId ? parseInt(chainId).toString() : "31337"
+  const summFactoryAddress = networkMapping[chainString].summFactory[0]; 
+
   const [formData, setFormData] = useState({
     opponent: "",
     softOfferCap: "",
@@ -18,12 +30,35 @@ function createSummTermsV2() {
     });
   };
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event){
     event.preventDefault();
-    // perform action with form data, e.g. sending it to a server
-    console.log(formData);
+    // function createSummTerms(address payable _opponent, uint _softOffers, 
+    // uint _firmOffers, uint _softRange, uint _firmRange, uint _penaltyPercent)
 
-    // reset form data
+    const termDetails = {
+      abi: SummFactoryAbi, 
+      contractAddress: summFactoryAddress, 
+      functionName: "createSummTerms", 
+      params: {
+        opponent: formData.opponent, 
+        softOfferCap: formData.softOfferCap, 
+        firmOfferCap: formData.firmOfferCap, 
+        softRange: formData.softRange, 
+        firmRange: formData.firmRange, 
+        penaltyPercent: formData.penaltyPercent, 
+      }
+    }
+
+    await runContractFunction({
+      params: termDetails,
+      onSuccess: (tx) => console.log(`we made it! here is the tx: ${tx}`),
+      onError: (error) => {
+          console.log(error)
+      },
+  })
+
+  alert("Howzit! its loading!")
+
     setFormData({
       opponent: "",
       softOfferCap: "",
@@ -32,6 +67,10 @@ function createSummTermsV2() {
       firmRange: "",
       penaltyPercent: "",
     });
+
+    console.log(formData.opponent); 
+    console.log(formData.softOfferCap); 
+
   };
 
   return (

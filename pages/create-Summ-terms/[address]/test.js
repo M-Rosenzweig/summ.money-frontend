@@ -11,7 +11,7 @@ function createSummTerms() {
         penaltyPercent: "",
       });
 
-      const handleChange = (event) => {
+      const handleChange = (event) => {g
         setFormData({
           ...formData,
           [event.target.name]: event.target.value,

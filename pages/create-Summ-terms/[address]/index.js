@@ -35,27 +35,27 @@ function createSummTermsV2() {
     // function createSummTerms(address payable _opponent, uint _softOffers, 
     // uint _firmOffers, uint _softRange, uint _firmRange, uint _penaltyPercent)
 
-    const termDetails = {
-      abi: SummFactoryAbi, 
-      contractAddress: summFactoryAddress, 
-      functionName: "createSummTerms", 
-      params: {
-        opponent: formData.opponent, 
-        softOfferCap: formData.softOfferCap, 
-        firmOfferCap: formData.firmOfferCap, 
-        softRange: formData.softRange, 
-        firmRange: formData.firmRange, 
-        penaltyPercent: formData.penaltyPercent, 
-      }
-    }
+  //   const termDetails = {
+  //     abi: SummFactoryAbi, 
+  //     contractAddress: summFactoryAddress, 
+  //     functionName: "createSummTerms", 
+  //     params: {
+  //       _opponent: formData.opponent, 
+  //       _softOffers: formData.softOfferCap, 
+  //       _firmOffers: formData.firmOfferCap, 
+  //       _softRange: formData.softRange, 
+  //       _firmRange: formData.firmRange, 
+  //       _penaltyPercent: formData.penaltyPercent, 
+  //     }
+  //   }
 
-    await runContractFunction({
-      params: termDetails,
-      onSuccess: (tx) => console.log(`we made it! here is the tx: ${tx}`),
-      onError: (error) => {
-          console.log(error)
-      },
-  })
+  //   await runContractFunction({
+  //     params: termDetails,
+  //     onSuccess: (tx) => console.log(tx),
+  //     onError: (error) => {
+  //         console.log(error)
+  //     },
+  // })
 
   alert("Howzit! its loading!")
 
@@ -67,10 +67,6 @@ function createSummTermsV2() {
       firmRange: "",
       penaltyPercent: "",
     });
-
-    console.log(formData.opponent); 
-    console.log(formData.softOfferCap); 
-
   };
 
   return (

@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <nav id="globalVibes" class="p-5 border-b-2 flex flex-row justify-between items-center">
       <Link href={"/"}>
-        <h1 class="py-4 px-4 font-bold text-3xl text-blue-400">Summ</h1>
+        <h1 class="py-4 px-4 font-bold text-3xl text-blue-400 cursor-pointer">Summ</h1>
       </Link>
       <div class="hidden md:flex flex-row items-center">
         <Link

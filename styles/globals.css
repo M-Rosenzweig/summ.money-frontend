@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 #gridParent {
-  display: grid; 
+  display: grid;
   grid-template-columns: 22% 78%;
   background-color: white;
   height: 100vh;
@@ -15,34 +15,56 @@
 }
 
 #parentWrap {
-   /* overflow: hidden; */
+  /* overflow: hidden; */
   width: fit-content;
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: rows; 
+  flex-direction: rows;
   /* background-color: red; */
 }
 
-.flexParent{
+.flexParent {
   display: flex;
-  flex-wrap: wrap; 
-  /* flex-direction: rows;  */
+  flex-wrap: wrap;
+  flex-direction: rows;
   justify-content: space-around;
   align-items: center;
   /* background-color: black;  */
-  width:75vw; 
+  width: 75vw;
 }
 
-.flexChild{
+.flexParentSumms{
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: rows;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: black;  */
+  width: 100vw;
+  height: 100vh;
+}
+
+.flexChild {
+  display: flex;
+  justify-content: space-around;
   flex-wrap: wrap;
   flex-direction: rows;
 }
 
-#bottomRow{
-  background-color:grey; 
+#TestMySumms{
+
+}
+
+.mySummParentCard {
+  align-items: center;
+  background-color: green;
+  width: 100vw;
+  height: 100vh;
+}
+
+#bottomRow {
+  background-color: grey;
 }
 
 #scale-in {

@@ -3,30 +3,28 @@ import TermCard from "../../../components/TermCard";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import networkMapping from "../../../constants/networkMapping.json";
 import SummFactoryAbi from "../../../constants/SummFactory.json";
-import SummTermsAbi from "../../../constants/SummTerms.json";
-
-// import {ethers} from "ethers";
+// import SummTermsAbi from "../../../constants/SummTerms.json";
+import { ethers } from "ethers";
 
 function createSummTermsV2() {
-  const { chainId, account, isWeb3Enabled } = useMoralis();
+  const { chainId, isWeb3Enabled } = useMoralis();
   const { runContractFunction } = useWeb3Contract();
-  let chainString;
-  if (chainId == 1337) {
-    chainString = parseInt(chainId).toString();
-  } else if (chainId == 31337) {
-    chainString = parseInt(1337).toString();
-  } else if (chainId == 5) {
-    chainString = parseInt(chainId).toString();
-  }
-  // const chainString = chainId ? parseInt(chainId).toString() : "31337";
-  // const summFactoryAddress = networkMapping[chainString].summFactory[0];
-  const summFactoryAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const provider = new ethers.providers.InfuraProvider("goerli");
 
-  useEffect(() => {
-    console.log(chainId);
-    console.log(chainString);
-    console.log(summFactoryAddress);
-  }, [chainId]);
+  // let chainString = "31337";
+  // if (chainId == 1337) {
+  //   chainString = "31337";
+  // } else {
+  // }
+  const chainString = chainId ? parseInt(chainId).toString() : "31337";
+  const summFactoryAddress = networkMapping[chainString].summFactory[0];
+
+  // useEffect(() => {
+  //   // console.log(chainId);
+  //   // console.log(chainString);
+  //   // console.log(summFactoryAddress);
+  //   // console.log(SummFactoryAbi)
+  // }, [chainId]);
 
   const [formData, setFormData] = useState({
     opponent: "",
@@ -65,16 +63,17 @@ function createSummTermsV2() {
 
     await runContractFunction({
       params: termDetails,
-      onSuccess: (tx) => console.log(tx),
+      onSuccess: (tx) => {
+        alert("Success: This is your transaction hash " + tx.transactionHash + "");
+        console.log(`this is a success message: ${tx}`);
+      },
       onError: (error) => {
-        console.log(error);
+        alert("Error: " + error.message + "")
+        console.log(`this is an error message: ${error}`);
       },
     });
 
-    console.log(summFactoryAddress);
-    alert("Howzit! its loading!");
-
-    // getSummTermsAddress();
+    listenToEvent(); 
 
     setFormData({
       opponent: "",
@@ -85,27 +84,13 @@ function createSummTermsV2() {
       penaltyPercent: "",
     });
   }
-
-  // async function getSummTermsAddress() {
-
-  //   const termDetails = {
-  //     abi: SummFactoryAbi,
-  //     contractAddress: summFactoryAddress,
-  //     functionName: "createSummTerms",
-  //     params: {
-
-  //     },
-  //   };
-
-  //   await runContractFunction({
-  //     params: termDetails,
-  //     onSuccess: (tx) => console.log(tx),
-  //     onError: (error) => {
-  //       console.log(error);
-  //     },
-  //   });
-
-  // }
+    
+  async function listenToEvent() {
+    const ContractOfSummFactory = new ethers.Contract(summFactoryAddress, SummFactoryAbi, provider);
+    await ContractOfSummFactory.on("NewSumm", (newSummTerms) => {
+      console.log(newSummTerms);
+    });
+  }
 
   return (
     <>

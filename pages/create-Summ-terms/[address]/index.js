@@ -18,9 +18,9 @@ function createSummTermsV2() {
   } else if (chainId == 5) {
     chainString = parseInt(chainId).toString();
   }
-  // const chainString = chainId == 1337 ? parseInt(chainId).toString() : "31337";
-  const summFactoryAddress = networkMapping[chainString].summFactory[0];
-  // const summFactoryAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  // const chainString = chainId ? parseInt(chainId).toString() : "31337";
+  // const summFactoryAddress = networkMapping[chainString].summFactory[0];
+  const summFactoryAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
   useEffect(() => {
     console.log(chainId);

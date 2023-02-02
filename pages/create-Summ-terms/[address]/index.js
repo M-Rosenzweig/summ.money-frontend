@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TermCard from "../../../components/TermCard";
-import { useMoralis, useWeb3Contract } from "react-moralis"
+import { useMoralis, useWeb3Contract } from "react-moralis";
 import networkMapping from "../../../constants/networkMapping.json";
-import SummFactoryAbi from "../../../constants/SummFactory.json"; 
-import SummTermsAbi from "../../../constants/SummTerms.json"
+import SummFactoryAbi from "../../../constants/SummFactory.json";
+import SummTermsAbi from "../../../constants/SummTerms.json";
 
-// import {ethers} from "ethers"; 
-
+// import {ethers} from "ethers";
 
 function createSummTermsV2() {
-  const {chainId, account, isWeb3Enabled} = useMoralis();
-  const {runContractFunction} = useWeb3Contract();  
-  const chainString = chainId ? parseInt(chainId).toString() : "31337"
-  const summFactoryAddress = networkMapping[chainString].summFactory[0]; 
+  const { chainId, account, isWeb3Enabled } = useMoralis();
+  const { runContractFunction } = useWeb3Contract();
+  let chainString;
+  if (chainId == 1337) {
+    chainString = parseInt(chainId).toString();
+  } else if (chainId == 31337) {
+    chainString = parseInt(1337).toString();
+  } else if (chainId == 5) {
+    chainString = parseInt(chainId).toString();
+  }
+  // const chainString = chainId == 1337 ? parseInt(chainId).toString() : "31337";
+  const summFactoryAddress = networkMapping[chainString].summFactory[0];
+  // const summFactoryAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+  useEffect(() => {
+    console.log(chainId);
+    console.log(chainString);
+    console.log(summFactoryAddress);
+  }, [chainId]);
 
   const [formData, setFormData] = useState({
     opponent: "",
@@ -30,34 +44,37 @@ function createSummTermsV2() {
     });
   };
 
-  async function handleSubmit(event){
+  async function handleSubmit(event) {
     event.preventDefault();
-    // function createSummTerms(address payable _opponent, uint _softOffers, 
+    // function createSummTerms(address payable _opponent, uint _softOffers,
     // uint _firmOffers, uint _softRange, uint _firmRange, uint _penaltyPercent)
 
-  //   const termDetails = {
-  //     abi: SummFactoryAbi, 
-  //     contractAddress: summFactoryAddress, 
-  //     functionName: "createSummTerms", 
-  //     params: {
-  //       _opponent: formData.opponent, 
-  //       _softOffers: formData.softOfferCap, 
-  //       _firmOffers: formData.firmOfferCap, 
-  //       _softRange: formData.softRange, 
-  //       _firmRange: formData.firmRange, 
-  //       _penaltyPercent: formData.penaltyPercent, 
-  //     }
-  //   }
+    const termDetails = {
+      abi: SummFactoryAbi,
+      contractAddress: summFactoryAddress,
+      functionName: "createSummTerms",
+      params: {
+        _opponent: formData.opponent,
+        _softOffers: formData.softOfferCap,
+        _firmOffers: formData.firmOfferCap,
+        _softRange: formData.softRange,
+        _firmRange: formData.firmRange,
+        _penaltyPercent: formData.penaltyPercent,
+      },
+    };
 
-  //   await runContractFunction({
-  //     params: termDetails,
-  //     onSuccess: (tx) => console.log(tx),
-  //     onError: (error) => {
-  //         console.log(error)
-  //     },
-  // })
+    await runContractFunction({
+      params: termDetails,
+      onSuccess: (tx) => console.log(tx),
+      onError: (error) => {
+        console.log(error);
+      },
+    });
 
-  alert("Howzit! its loading!")
+    console.log(summFactoryAddress);
+    alert("Howzit! its loading!");
+
+    // getSummTermsAddress();
 
     setFormData({
       opponent: "",
@@ -67,7 +84,28 @@ function createSummTermsV2() {
       firmRange: "",
       penaltyPercent: "",
     });
-  };
+  }
+
+  // async function getSummTermsAddress() {
+
+  //   const termDetails = {
+  //     abi: SummFactoryAbi,
+  //     contractAddress: summFactoryAddress,
+  //     functionName: "createSummTerms",
+  //     params: {
+
+  //     },
+  //   };
+
+  //   await runContractFunction({
+  //     params: termDetails,
+  //     onSuccess: (tx) => console.log(tx),
+  //     onError: (error) => {
+  //       console.log(error);
+  //     },
+  //   });
+
+  // }
 
   return (
     <>

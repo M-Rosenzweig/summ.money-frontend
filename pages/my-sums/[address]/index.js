@@ -7,8 +7,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
 function summs({ address }) {
-  // let deployedSumms;
-  const shortenedAddress = address.slice(0, 6) + "..." + address.slice(-6);
 
   const [lastDeployedSumm, setLastDeployedSumm] = useState("");
   const [shorterSummAddress, setShorterSummAddress] = useState("");
@@ -19,12 +17,8 @@ function summs({ address }) {
 
   async function getValue() {
     const arrayOfDeployedSumms = await factory.getDeployedSumms.call();
-    // console.log(arrayOfDeployedSumms);
       setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
       setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
-    
-
-    // console.log(lastDeployedSumm);
   }
 
   return (

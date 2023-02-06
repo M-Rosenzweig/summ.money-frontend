@@ -64,7 +64,7 @@ function createSummTermsV2() {
     await runContractFunction({
       params: termDetails,
       onSuccess: (tx) => {
-        alert("Success: This is your transaction hash " + tx.transactionHash + "");
+        alert("Success: You can view your newly created Summ Terms in MySumms page ");
         console.log(`this is a success message: ${tx}`);
       },
       onError: (error) => {

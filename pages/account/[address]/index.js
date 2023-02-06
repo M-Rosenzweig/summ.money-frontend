@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import factory from "../../../constants/factory.js";
+
 
 function Account({ address }) {
   const shortenedAddress = address.slice(0, 6) + "..." + address.slice(-6);

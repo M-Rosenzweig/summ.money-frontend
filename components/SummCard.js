@@ -1,37 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Link from "next/link";
 
+function SummCard({ address, lastDeployedSumm }) {
+  const [shortenedAddress, setShortenedAddress] = useState("");
 
-function SummCard({shortenedAddress, address}) {
+  useEffect(() => {
+    console.log(lastDeployedSumm);
+    // console.log(shortenAddress(lastDeployedSumm));
+    setShortenedAddress(lastDeployedSumm.slice(0, 8) + "..." + lastDeployedSumm.slice(-4));
+  }, [address]);
+
+  // function shortenAddress(lastDeployedSumm) {
+  //   return lastDeployedSumm.slice(0, 8) + '...' + lastDeployedSumm.slice(-4);
+  // }
 
   function handleClick() {
-    console.log("hey lets go to the negotiation page (even though a seperate details page would be good.. MVP!!"); 
+    console.log(
+      "hey lets go to the negotiation page (even though a seperate details page would be good.. MVP!!"
+    );
   }
-   
+
   return (
     <>
       <div id="parentWrap" className="flex flex-wrap">
-        <Link href={`/summ-offers/${address}`}>
-        <div id="scale-in" className="m-6 min-w-half max-w-xs max-h-fit" onClick={handleClick}>
-          <Card className="bg-white p-10">
-            <CardContent>
-              <Typography className="text-center" variant="h5" component="div">
-                {shortenedAddress}
-              </Typography>
-              <Typography className="text-center" color="text.bold">
-                 Opponent
-              </Typography>
-              <Typography variant="body2">
-                {shortenedAddress}
-                <br />
-              </Typography>
-            </CardContent>
-          </Card>
-        </div>
-      </Link>
+        <Link href={`/summ-offers/${lastDeployedSumm}`}>
+          <div id="scale-in" className="m-6 min-w-half max-w-xs max-h-fit" onClick={handleClick}>
+            <Card className="bg-white p-10">
+              <CardContent>
+                <Typography className="text-center" variant="h5" component="div">
+                  {shortenedAddress}
+                </Typography>
+                <Typography className="text-center" color="text.bold">
+                  Opponent
+                </Typography>
+                <Typography variant="body2">
+                  {shortenedAddress}
+                  <br />
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+        </Link>
       </div>
     </>
   );

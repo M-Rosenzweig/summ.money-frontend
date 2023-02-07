@@ -15,14 +15,12 @@ function summs({ address }) {
     getFactory();
   }, []);
 
-  //   async function useFactory() {
-  //     const factory = await initializeAndExportFactory();
-  //     // Use the fully initialized factory
-  // }
 
   async function getFactory() {
     factory = await initializeAndExportFactory();
+    // console.log(factory);
     const arrayOfDeployedSumms = await factory.getDeployedSumms.call();
+    // console.log(arrayOfDeployedSumms);
     setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
     setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
   }

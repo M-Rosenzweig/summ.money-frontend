@@ -12,16 +12,16 @@ if(typeof window !== "undefined") {
     provider = new ethers.providers.InfuraProvider("goerli");
 }
 
-async function getNetwork() {
+async function getNetworkAndSetFactory() {
     network = await provider.getNetwork();
     console.log(network.chainId);
     const summFactoryAddress = networkMapping[network.chainId].summFactory[0];
-    factory = new ethers.Contract(summFactoryAddress, SummFactory, provider);
+    return factory = new ethers.Contract(summFactoryAddress, SummFactory, provider);
 }
 
 
 async function initializeAndExportFactory() {
-    await getNetwork();
+    await getNetworkAndSetFactory();
     return factory;
 }
 

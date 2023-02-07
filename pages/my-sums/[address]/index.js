@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from "react";
 import SummCard from "../../../components/SummCard";
-import factory from "../../../constants/factory.js";
+import initializeAndExportFactory from "../../../constants/factory.js";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ethers } from "ethers";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
 function summs({ address }) {
-
   const [lastDeployedSumm, setLastDeployedSumm] = useState("");
   const [shorterSummAddress, setShorterSummAddress] = useState("");
+  let factory;
 
   useEffect(() => {
-    getValue();
+    getFactory();
   }, []);
 
-  async function getValue() {
+  //   async function useFactory() {
+  //     const factory = await initializeAndExportFactory();
+  //     // Use the fully initialized factory
+  // }
+
+  async function getFactory() {
+    factory = await initializeAndExportFactory();
     const arrayOfDeployedSumms = await factory.getDeployedSumms.call();
-      setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
-      setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
+    setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
+    setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
   }
+
+  // async function getValue() {
+  //     console.log();
+  //     // const arrayOfDeployedSumms = await factory.getDeployedSumms.call();
+  //     // setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
+  //     // setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
+
+  // }
 
   return (
     <>

@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react'; 
+import React, { useState, useEffect } from "react";
+import { BigNumber } from "ethers";
+import TermCard from "../../../components/TermCard";
 import initializeAndExportSummTermsInstance from "../../../constants/specificSummTerms.js";
 
-function summOffers({address}) {
-
-  let summTermsInstance; 
+function summOffers({ address }) {
+  let summTermsInstance;
   const [status, setStatus] = useState("");
   const [summary, setSummary] = useState({
     creator: "",
@@ -17,52 +18,54 @@ function summOffers({address}) {
   });
 
   useEffect(() => {
-    getSummTermsInstance(address); 
-  },[status])
+    getSummTermsInstance(address);
+  }, [status]);
 
   async function getSummTermsInstance(address) {
-    summTermsInstance = await initializeAndExportSummTermsInstance(address); 
+    summTermsInstance = await initializeAndExportSummTermsInstance(address);
     // console.log("summTermsInstance", summTermsInstance);
     findOutStatusAndGetSummary(summTermsInstance);
   }
 
   async function findOutStatusAndGetSummary(summTermsInstance) {
     const contractStatus = await summTermsInstance.termsStatus();
-    setStatus(contractStatus); 
+    setStatus(contractStatus);
 
     const summaryData = await summTermsInstance.getSummary();
     console.log("summaryData", summaryData);
-    console.log("summary1", summaryData[0]);
-    console.log("summary2", summaryData[1]);
-    console.log("summary3", summaryData[2]);
-    console.log("summary4", summaryData[3]);
-    console.log("summary5", summaryData[4]);
-   setSummary({
+
+    setSummary({
       creator: summaryData[0],
       opponent: summaryData[1],
-      totalSoftOfferCap: summaryData[2],
-      totalFirmOfferCap: summaryData[3],
-      softRange: summaryData[4],
-      firmRange: summaryData[5],
-      penaltyPercent: summaryData[6],
+      totalSoftOfferCap: BigNumber.from(summaryData[2].toNumber()),
+      totalFirmOfferCap: BigNumber.from(summaryData[3].toNumber()),
+      softRange: BigNumber.from(summaryData[4].toNumber()),
+      firmRange: BigNumber.from(summaryData[5].toNumber()),
+      penaltyPercent: BigNumber.from(summaryData[6].toNumber()),
       termsStatus: summaryData[7],
     });
-    getInfo(); 
+    // getInfo();
   }
 
-  function getInfo() {
-    // console.log("status", status);
-    console.log("summary", summary);
-  }
+//  async function getInfo() {
+//     // console.log("status", status);
+//     console.log("summary", summary);
+//   }
 
   return (
     <>
-        <div>
-            <h1>Summ Offers page. where the negotiation happens</h1>
-        </div>
-
+      <div className="flexParentSumms">
+        <div className="flexChild">
+        {Object.entries(summary).map(([key, value]) => {
+              if (value !== false) {
+                return <TermCard key={key} value={value.toString()} termKey={key} />;
+              }
+              return null;
+            })}
+        </div>     
+      </div>
     </>
-  )
+  );
 }
 
 export async function getServerSideProps({ params }) {
@@ -70,4 +73,12 @@ export async function getServerSideProps({ params }) {
   return { props: { address } };
 }
 
-export default summOffers
+export default summOffers;
+
+
+     {/* <h1>Summ Offers page. where the negotiation happens</h1>
+        <p>{summary.creator}</p>
+        <p>{summary.opponent}</p>
+        <p>{summary.totalSoftOfferCap}</p>
+        <p>{summary.termsStatus}</p>
+        <p>vibesTribes</p> */}

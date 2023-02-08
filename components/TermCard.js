@@ -14,11 +14,11 @@ function TermCard({ termKey, value }) {
       setDescription("The address you would like to negotiate with.");
       setRequirement("Must be a valid Ethereum address that is not your own.");
       setTitle("Opponent");
-    } else if (termKey == "softOfferCap") {
+    } else if (termKey == "totalSoftOfferCap") {
       setDescription("The maximum amount of soft offer rounds.");
       setRequirement("The amount of soft offer rounds cannot exceed 10 or be below 0.");
       setTitle("Soft Offer Cap");
-    } else if (termKey == "firmOfferCap") {
+    } else if (termKey == "totalFirmOfferCap") {
       setDescription("The maximum amount of firm offers rounds.");
       setRequirement("The amount of firm offers cannot exceed 10.");
       setTitle("Firm Offer Cap");
@@ -34,6 +34,9 @@ function TermCard({ termKey, value }) {
       setDescription("The percentage used for penalties in firm round of average number.");
       setRequirement("Must be greater than 0 and less than 20.");
       setTitle("Penalty Percent");
+    } else if(termKey == "creator") {
+      setDescription("The address of the creator of the negotiation.");
+      setTitle("Creator");
     }
   }, [termKey]);
 
@@ -41,7 +44,7 @@ function TermCard({ termKey, value }) {
     return null;
   }
 
-  let ternaryValue = termKey == "opponent" ? value.slice(0, 5) + "..." + value.slice(-5) : value;
+  let ternaryValue = termKey == "opponent" || termKey == "creator" ? value.slice(0, 5) + "..." + value.slice(-5) : value;
 
   return (
     <>

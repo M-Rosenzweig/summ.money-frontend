@@ -25,14 +25,6 @@ function summs({ address }) {
     setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
   }
 
-  // async function getValue() {
-  //     console.log();
-  //     // const arrayOfDeployedSumms = await factory.getDeployedSumms.call();
-  //     // setLastDeployedSumm(arrayOfDeployedSumms[arrayOfDeployedSumms.length - 1]);
-  //     // setShorterSummAddress(lastDeployedSumm.slice(0, 6) + "..." + lastDeployedSumm.slice(-6));
-
-  // }
-
   return (
     <>
       {/* <div className="flex flex-row justify-center " >

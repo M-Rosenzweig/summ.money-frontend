@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 
-function TermCard({ termKey, value }) {
+function TermCard({ termKey, value, requirementText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [requirement, setRequirement] = useState("");
@@ -11,7 +11,7 @@ function TermCard({ termKey, value }) {
   // useEffect(() => {
   useEffect(() => {
     if (termKey == "opponent") {
-      setDescription("The address you would like to negotiate with.");
+      setDescription("The address of the opponent in this Summ.");
       setRequirement("Must be a valid Ethereum address that is not your own.");
       setTitle("Opponent");
     } else if (termKey == "totalSoftOfferCap") {
@@ -49,20 +49,20 @@ function TermCard({ termKey, value }) {
   return (
     <>
       <div id="parentWrap" className="flex flex-wrap">
-        <div id="scale-in" className="m-3 min-w-half max-w-xs max-h-fit">
+        <div id="scale-in" className="m-3 max-w-xs max-h-fit minWidth ">
           <Card className="bg-white p-4">
             <CardContent>
               <Typography className="text-center" variant="h5" component="div">
                 {title}
               </Typography>
-              <Typography className="text-center" color="text.bold">
+              <Typography className="text-center font-extrabold" color="text.bold">
                 {ternaryValue}
               </Typography>
               <Typography variant="body2">
                 {description}
                 <br />
                 <Typography className="text-red-300 text-xs" variant="body2">
-                  {`Requirement: ${requirement}`}
+                  {requirementText ? `Requirement: ${requirement}` : null}
                 </Typography>
               </Typography>
             </CardContent>

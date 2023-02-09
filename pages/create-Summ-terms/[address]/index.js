@@ -186,7 +186,7 @@ function createSummTermsV2() {
           <div className="flexChild">
             {Object.entries(formData).map(([key, value]) => {
               if (value !== false) {
-                return <TermCard key={key} value={value} termKey={key} />;
+                return <TermCard key={key} value={value} termKey={key} requirementText={true} />;
               }
               return null;
             })}

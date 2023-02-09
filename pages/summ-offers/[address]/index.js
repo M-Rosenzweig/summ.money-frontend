@@ -32,7 +32,6 @@ function summOffers({ address }) {
     setStatus(contractStatus);
 
     const summaryData = await summTermsInstance.getSummary();
-    console.log("summaryData", summaryData);
 
     setSummary({
       creator: summaryData[0],
@@ -44,25 +43,28 @@ function summOffers({ address }) {
       penaltyPercent: BigNumber.from(summaryData[6].toNumber()),
       termsStatus: summaryData[7],
     });
-    // getInfo();
   }
 
-//  async function getInfo() {
-//     // console.log("status", status);
-//     console.log("summary", summary);
-//   }
+
 
   return (
     <>
-      <div className="flexParentSumms">
-        <div className="flexChild">
-        {Object.entries(summary).map(([key, value]) => {
+      <div className="flex flex-wrap">
+        <div className="negotiationControls flex-wrap">
+          
+          vibes
+        
+        </div>
+        <div className="flexParentSumms float-right">
+          <div className="flexChild">
+            {Object.entries(summary).map(([key, value]) => {
               if (value !== false) {
-                return <TermCard key={key} value={value.toString()} termKey={key} />;
+                return <TermCard key={key} value={value.toString()} termKey={key} requirementText={false} />;
               }
               return null;
             })}
-        </div>     
+          </div>
+        </div>
       </div>
     </>
   );
@@ -75,10 +77,11 @@ export async function getServerSideProps({ params }) {
 
 export default summOffers;
 
-
-     {/* <h1>Summ Offers page. where the negotiation happens</h1>
+{
+  /* <h1>Summ Offers page. where the negotiation happens</h1>
         <p>{summary.creator}</p>
         <p>{summary.opponent}</p>
         <p>{summary.totalSoftOfferCap}</p>
         <p>{summary.termsStatus}</p>
-        <p>vibesTribes</p> */}
+        <p>vibesTribes</p> */
+}

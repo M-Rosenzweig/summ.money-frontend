@@ -7,6 +7,7 @@ function TermCard({ termKey, value, requirementText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [requirement, setRequirement] = useState("");
+  // const [size, setSize] = useState(requirementText ? "smallBox" : "mediumBox");
 
   // useEffect(() => {
   useEffect(() => {

@@ -2,10 +2,15 @@ import React, { useState, useEffect } from "react";
 import { BigNumber } from "ethers";
 import TermCard from "../../../components/TermCard";
 import initializeAndExportSummTermsInstance from "../../../constants/specificSummTerms.js";
+import { useMoralis } from "react-moralis";
+import SideBarNegotiation from "@/components/SideBarNegotiation";
 
 function summOffers({ address }) {
+  const { isWeb3Enabled, account } = useMoralis();
+  // const [userAccount, setUserAccount] = useState("");
+
   let summTermsInstance;
-  const [status, setStatus] = useState("");
+
   const [summary, setSummary] = useState({
     creator: "",
     opponent: "",
@@ -19,18 +24,14 @@ function summOffers({ address }) {
 
   useEffect(() => {
     getSummTermsInstance(address);
-  }, [status]);
+  }, [account, summary.termsStatus]);
 
   async function getSummTermsInstance(address) {
     summTermsInstance = await initializeAndExportSummTermsInstance(address);
-    // console.log("summTermsInstance", summTermsInstance);
     findOutStatusAndGetSummary(summTermsInstance);
   }
 
   async function findOutStatusAndGetSummary(summTermsInstance) {
-    const contractStatus = await summTermsInstance.termsStatus();
-    setStatus(contractStatus);
-
     const summaryData = await summTermsInstance.getSummary();
 
     setSummary({
@@ -45,24 +46,29 @@ function summOffers({ address }) {
     });
   }
 
-
-
   return (
     <>
       <div className="flex flex-wrap">
-        <div className="negotiationControls flex-wrap">
-          
-          vibes
-        
-        </div>
-        <div className="flexParentSumms float-right">
-          <div className="flexChild">
-            {Object.entries(summary).map(([key, value]) => {
-              if (value !== false) {
-                return <TermCard key={key} value={value.toString()} termKey={key} requirementText={false} />;
-              }
-              return null;
-            })}
+        <div className="flex flex-wrap">
+          {account !== "" && summary.termsStatus !== "" ? (
+            <SideBarNegotiation account={account} summary={summary} />
+          ) : null}
+          <div className="flexParentSumms float-right">
+            <div className="flexChild">
+              {Object.entries(summary).map(([key, value]) => {
+                if (value !== false) {
+                  return (
+                    <TermCard
+                      key={key}
+                      value={value.toString()}
+                      termKey={key}
+                      requirementText={false}
+                    />
+                  );
+                }
+                return null;
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -76,12 +82,3 @@ export async function getServerSideProps({ params }) {
 }
 
 export default summOffers;
-
-{
-  /* <h1>Summ Offers page. where the negotiation happens</h1>
-        <p>{summary.creator}</p>
-        <p>{summary.opponent}</p>
-        <p>{summary.totalSoftOfferCap}</p>
-        <p>{summary.termsStatus}</p>
-        <p>vibesTribes</p> */
-}

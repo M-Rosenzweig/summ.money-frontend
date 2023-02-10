@@ -62,7 +62,7 @@ function summOffers({ address }) {
             />
           ) : null}
 
-          {summary.termsStatus !== "" && summary.termsStatus ? (
+          {summary.termsStatus !== "" && summary.termsStatus || accepted == "yes" ? (
             <p>yo it has been accepted. lets set state so the ui is different here.</p>
           ) : null}
           <div className="flexParentSumms float-right">

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import TermCard from "../../../components/TermCard";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import networkMapping from "../../../constants/networkMapping.json";
 import SummFactoryAbi from "../../../constants/SummFactory.json";
-// import SummTermsAbi from "../../../constants/SummTerms.json";
 import { ethers } from "ethers";
 
 function createSummTermsV2() {
@@ -11,11 +10,6 @@ function createSummTermsV2() {
   const { runContractFunction } = useWeb3Contract();
   const provider = new ethers.providers.InfuraProvider("goerli");
 
-  // let chainString = "31337";
-  // if (chainId == 1337) {
-  //   chainString = "31337";
-  // } else {
-  // }
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
   const summFactoryAddress = networkMapping[chainString].summFactory[0];
 

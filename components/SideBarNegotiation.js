@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
 
-function SideBarNegotiation({ account, summary }) {
+function SideBarNegotiation({ account, summary, address, SummTerms }) {
   const [user, setUser] = useState("");
   const [accepted, setAccepted] = useState("");
   const [opponent, setOpponent] = useState("");
   const [creator, setCreator] = useState("");
+
+  const { isWeb3Enabled } = useMoralis();
+  const { runContractFunction } = useWeb3Contract();
 
   useEffect(() => {
     checkUser();
@@ -31,6 +35,29 @@ function SideBarNegotiation({ account, summary }) {
       console.log("gersh");
     }
   }
+
+  async function handleTermsResponse(response) {
+    console.log(response);
+    const paramsForResponse = {
+      abi: SummTerms,
+      contractAddress: address,
+      functionName: "respondToTerms",
+      params: { _response: response },
+    };
+    await runContractFunction({
+      params: paramsForResponse,
+      onSuccess: (tx) => {
+        alert("Transaction successful: " + tx.transactionHash);
+        console.log("this is a sucuessful transaction: " + tx.transactionHash);
+      },
+      onError: (error) => {
+        alert("Transaction failed: " + error.message);
+        console.log("this is a failed transaction: " + error.message);
+      },
+    });
+
+  }
+
   return (
     <div className="negotiationControls flex-wrap justify-center">
       {user === "opponent" && accepted === "unaccepted" && (
@@ -38,8 +65,7 @@ function SideBarNegotiation({ account, summary }) {
           <button
             className="bg-emerald-500 text-white font-bold py-5 px-5 rounded mt-8 m-5 "
             onClick={() => {
-              // summTermsInstance.respondToTerms(true);
-              console.log("accepted");
+              handleTermsResponse(true);
             }}
           >
             Accept Terms
@@ -47,8 +73,7 @@ function SideBarNegotiation({ account, summary }) {
           <button
             className="bg-red-500 text-white font-bold py-5 px-5 rounded mt-8 m-5 "
             onClick={() => {
-              // summTermsInstance.respondToTerms(false);
-              console.log("rejected");
+              handleTermsResponse(false);
             }}
           >
             Reject Terms
@@ -57,14 +82,14 @@ function SideBarNegotiation({ account, summary }) {
       )}
       {user === "creator" && accepted === "unaccepted" && (
         <>
-          <button
-            className="bg-blue-400 text-white font-bold py-1 px-5 rounded mt-8 m-5 "
-          >
+          <button className="bg-blue-400 text-white font-bold py-1 px-5 rounded mt-8 m-5 ">
             Waiting For Opponent To Accept Terms
           </button>
         </>
       )}
     </div>
+
+    // we want in the case of the user being the opponent and the terms being accepted 
   );
 }
 

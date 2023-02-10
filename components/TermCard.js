@@ -57,7 +57,7 @@ function TermCard({ termKey, value, requirementText }) {
   return (
     <>
       <div id="parentWrap" className="flex flex-wrap">
-        <div id="scale-in" className="m-3 max-w-xs max-h-fit minWidth ">
+        <div id="scale-in" className="m-4 max-w-xs max-h-fit minWidth ">
           <Card className="bg-white p-4">
             <CardContent>
               <Typography className="text-center" variant="h5" component="div">

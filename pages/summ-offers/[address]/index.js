@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { BigNumber } from "ethers";
 import TermCard from "../../../components/TermCard";
 import initializeAndExportSummTermsInstance from "../../../constants/specificSummTerms.js";
-import { useMoralis } from "react-moralis";
+import SummTerms from "../../../constants/SummTerms.json";
+import { useMoralis, useWeb3Contract } from "react-moralis";
 import SideBarNegotiation from "@/components/SideBarNegotiation";
 
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
-  // const [userAccount, setUserAccount] = useState("");
+  const [accepted, setAccepted] = useState("");
 
   let summTermsInstance;
 
@@ -44,14 +45,25 @@ function summOffers({ address }) {
       penaltyPercent: BigNumber.from(summaryData[6].toNumber()),
       termsStatus: summaryData[7],
     });
+
+    summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
   }
 
   return (
     <>
       <div className="flex flex-wrap">
         <div className="flex flex-wrap">
-          {account !== "" && summary.termsStatus !== "" ? (
-            <SideBarNegotiation account={account} summary={summary} />
+          {summary.termsStatus !== "" && !summary.termsStatus ? (
+            <SideBarNegotiation
+              account={account}
+              summary={summary}
+              address={address}
+              SummTerms={SummTerms}
+            />
+          ) : null}
+
+          {summary.termsStatus !== "" && summary.termsStatus ? (
+            <p>yo it has been accepted. lets set state so the ui is different here.</p>
           ) : null}
           <div className="flexParentSumms float-right">
             <div className="flexChild">

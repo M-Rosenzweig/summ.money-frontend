@@ -69,7 +69,7 @@ function createSummTermsV2() {
       },
       onError: (error) => {
         alert("Error: " + error.message + "")
-        console.log(`this is an error message: ${error}`);
+        console.log(`this is an error message: ${error.message}`);
       },
     });
 

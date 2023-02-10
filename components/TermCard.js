@@ -35,7 +35,7 @@ function TermCard({ termKey, value, requirementText }) {
       setDescription("The percentage used for penalties in firm round of average number.");
       setRequirement("Must be greater than 0 and less than 20.");
       setTitle("Penalty Percent");
-    } else if(termKey == "creator") {
+    } else if (termKey == "creator") {
       setDescription("The address of the creator of the negotiation.");
       setTitle("Creator");
     }
@@ -45,7 +45,14 @@ function TermCard({ termKey, value, requirementText }) {
     return null;
   }
 
-  let ternaryValue = termKey == "opponent" || termKey == "creator" ? value.slice(0, 5) + "..." + value.slice(-5) : value;
+  let ternaryValue =
+    termKey == "opponent" || termKey == "creator"
+      ? value.slice(0, 5) + "..." + value.slice(-5)
+      : value;
+  let ternaryValuePercent =
+    termKey == "softRange" || termKey == "firmRange" || termKey == "penaltyPercent"
+      ? ternaryValue + "%"
+      : ternaryValue;
 
   return (
     <>
@@ -57,7 +64,7 @@ function TermCard({ termKey, value, requirementText }) {
                 {title}
               </Typography>
               <Typography className="text-center font-extrabold" color="text.bold">
-                {ternaryValue}
+                {ternaryValuePercent}
               </Typography>
               <Typography variant="body2">
                 {description}

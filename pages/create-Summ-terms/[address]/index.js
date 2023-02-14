@@ -13,13 +13,6 @@ function createSummTermsV2() {
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
   const summFactoryAddress = networkMapping[chainString].summFactory[0];
 
-  // useEffect(() => {
-  //   // console.log(chainId);
-  //   // console.log(chainString);
-  //   // console.log(summFactoryAddress);
-  //   // console.log(SummFactoryAbi)
-  // }, [chainId]);
-
   const [formData, setFormData] = useState({
     opponent: "",
     totalSoftOfferCap: "",

@@ -82,3 +82,5 @@ function TermCard({ termKey, value, requirementText }) {
 }
 
 export default TermCard;
+
+

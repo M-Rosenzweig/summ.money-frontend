@@ -5,10 +5,13 @@ import initializeAndExportSummTermsInstance from "../../../constants/specificSum
 import SummTerms from "../../../constants/SummTerms.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import SideBarNegotiation from "@/components/SideBarNegotiation";
+import ActiveOffers from "@/components/ActiveOffers";
+// import { useRouter } from 'next/router';
 
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
   const [accepted, setAccepted] = useState("");
+  // const router = useRouter();
 
   let summTermsInstance;
 
@@ -46,44 +49,46 @@ function summOffers({ address }) {
       termsStatus: summaryData[7],
     });
 
-    summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
+    // summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
   }
 
   return (
     <>
-      <div className="flex flex-wrap">
+      {summary.termsStatus !== "" && !summary.termsStatus ? (
         <div className="flex flex-wrap">
-          {summary.termsStatus !== "" && !summary.termsStatus ? (
-            <SideBarNegotiation
-              account={account}
-              summary={summary}
-              address={address}
-              SummTerms={SummTerms}
-            />
-          ) : null}
-
-          {summary.termsStatus !== "" && summary.termsStatus || accepted == "yes" ? (
-            <p>yo it has been accepted. lets set state so the ui is different here.</p>
-          ) : null}
-          <div className="flexParentSumms float-right">
-            <div className="flexChild">
-              {Object.entries(summary).map(([key, value]) => {
-                if (value !== false) {
-                  return (
-                    <TermCard
-                      key={key}
-                      value={value.toString()}
-                      termKey={key}
-                      requirementText={false}
-                    />
-                  );
-                }
-                return null;
-              })}
+          <div className="flex flex-wrap">
+            {summary.termsStatus !== "" && !summary.termsStatus ? (
+              <SideBarNegotiation
+                account={account}
+                summary={summary}
+                address={address}
+                SummTerms={SummTerms}
+              />
+            ) : null}
+            <div className="flexParentSumms float-right">
+              <div className="flexChild">
+                {summary.termsStatus !== "" && !summary.termsStatus
+                  ? Object.entries(summary).map(([key, value]) => {
+                      if (value !== false) {
+                        return (
+                          <TermCard
+                            key={key}
+                            value={value.toString()}
+                            termKey={key}
+                            requirementText={false}
+                          />
+                        );
+                      }
+                      return null;
+                    })
+                  : null}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : summary.termsStatus !== "" && summary.termsStatus ? (
+        <ActiveOffers summary={summary} account={account} />
+      ) : null}
     </>
   );
 }

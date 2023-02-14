@@ -28,7 +28,6 @@ function SideBarNegotiation({ account, summary, address, SummTerms }) {
     } else if (account == creator && summary.termsStatus == false) {
       setUser("creator");
       setAccepted("unaccepted");
-      console.log("yo");
     } else if (account == creator && summary.termsStatus == true) {
       setUser("creator");
       setAccepted("accepted");
@@ -47,15 +46,14 @@ function SideBarNegotiation({ account, summary, address, SummTerms }) {
     await runContractFunction({
       params: paramsForResponse,
       onSuccess: (tx) => {
-        alert("Transaction successful: " + tx.transactionHash);
-        console.log("this is a sucuessful transaction: " + tx.transactionHash);
+        alert("Transaction successful: The other party has been notified ");
+        console.log("this is a sucuessful transaction: " + tx);
       },
       onError: (error) => {
         alert("Transaction failed: " + error.message);
         console.log("this is a failed transaction: " + error.message);
       },
     });
-
   }
 
   return (
@@ -89,7 +87,7 @@ function SideBarNegotiation({ account, summary, address, SummTerms }) {
       )}
     </div>
 
-    // we want in the case of the user being the opponent and the terms being accepted 
+    // we want in the case of the user being the opponent and the terms being accepted
   );
 }
 

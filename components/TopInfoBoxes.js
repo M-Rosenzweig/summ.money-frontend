@@ -1,36 +1,31 @@
 import React, { useState, useEffect } from "react";
 
-function TopInfoBoxes({ termKey, value }) {
+function TopInfoBoxes({ termKey, value, account }) {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (termKey == "opponent") {
-      setDescription("The address of the opponent in this Summ.");
-
-      setTitle("Opponent");
+      if (account == value.toLowerCase()) {
+        setTitle("You");
+      } else {
+        setTitle("Opponent");
+      }
     } else if (termKey == "totalSoftOfferCap") {
-      setDescription("The maximum amount of soft offer rounds.");
-
       setTitle("Soft Offer Cap");
     } else if (termKey == "totalFirmOfferCap") {
-      setDescription("The maximum amount of firm offers rounds.");
-
       setTitle("Firm Offer Cap");
     } else if (termKey == "softRange") {
-      setDescription("The percentage range difference you can compromise on in soft rounds.");
-
       setTitle("Soft Range");
     } else if (termKey == "firmRange") {
-      setDescription("The percentage range difference you can compromise on in firm rounds.");
       setTitle("Firm Range");
     } else if (termKey == "penaltyPercent") {
-      setDescription("The percentage used for penalties in firm round of average number.");
-
       setTitle("Penalty Percent");
     } else if (termKey == "creator") {
-      setDescription("The address of the creator of the negotiation.");
-      setTitle("Creator");
+      if (account == value.toLowerCase()) {
+        setTitle("You");
+      } else {
+        setTitle("Creator");
+      }
     }
   }, [termKey]);
 
@@ -44,7 +39,7 @@ function TopInfoBoxes({ termKey, value }) {
       : ternaryValue;
 
   return (
-    <div className="m-8 bg-blue-100 p-4 rounded-lg">
+    <div className="m-8 bg-blue-50 p-4 rounded-lg shadow-md">
       <p>{title}</p>
       <p className="text-center">{ternaryValuePercent}</p>
     </div>

@@ -10,7 +10,8 @@ import ActiveOffers from "@/components/ActiveOffers";
 
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
-  const [accepted, setAccepted] = useState("");
+  const [summInstance, setSummInstance] = useState("");
+  // const [accepted, setAccepted] = useState("");
   // const router = useRouter();
 
   let summTermsInstance;
@@ -32,6 +33,7 @@ function summOffers({ address }) {
 
   async function getSummTermsInstance(address) {
     summTermsInstance = await initializeAndExportSummTermsInstance(address);
+    console.log(summTermsInstance);
     findOutStatusAndGetSummary(summTermsInstance);
   }
 
@@ -48,6 +50,13 @@ function summOffers({ address }) {
       penaltyPercent: BigNumber.from(summaryData[6].toNumber()),
       termsStatus: summaryData[7],
     });
+
+    if(summary.termsStatus !== "" && summary.termsStatus) {
+      let summInstanceAddress = await summTermsInstance.createdSumms(0)
+      setSummInstance(summInstanceAddress); 
+      console.log(summInstance);
+    }
+
 
     // summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
   }
@@ -87,7 +96,7 @@ function summOffers({ address }) {
           </div>
         </div>
       ) : summary.termsStatus !== "" && summary.termsStatus ? (
-        <ActiveOffers summary={summary} account={account} />
+        <ActiveOffers summary={summary} account={account} summInstance={summInstance} />
       ) : null}
     </>
   );

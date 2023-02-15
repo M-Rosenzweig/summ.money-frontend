@@ -1,34 +1,36 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
 
-function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, currentFirmOffer}) {
+function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, currentFirmOffer }) {
   const [softOfferAmuont, setSoftOfferAmuont] = useState("");
-  const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState('');
-  const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState('');
+  const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
+  const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
+  const [offerAcceptable, setOfferAcceptable] = useState(false);
+  const [lowestNumber, setlowestNumber] = useState("");
+  const [highestNumber, sethighestNumber] = useState("");
+
+  // console.log(summary.softRange.toNumber());
 
   useEffect(() => {
-    // console.log: }`);
-    // console.log(softRoundActive);
-    setInfo(); 
-    // g();
+    setInfo();
   }, [account]);
 
   async function setInfo() {
-    console.log(currentSoftOffer);
-    if(currentSoftOffer == false) {
-      console.log("heyJayy")
+    // console.log(currentSoftOffer);
+    // console.log("jaaaa")
+    if (currentSoftOffer == false) {
+      // console.log("heyJayy");
       setCurrentSoftOfferNumber(0);
-      } else if(currentSoftOffer == true) {
+    } else if (currentSoftOffer == true) {
       setCurrentSoftOfferNumber(currentSoftOffer);
-      }
-    if(currentFirmOffer == false) {
+    }
+    if (currentFirmOffer == false) {
       setCurrentFirmOfferNumber(0);
       // console.log(currentFirmOffer == true);
-      } else if(currentFirmOffer == true) {
+    } else if (currentFirmOffer == true) {
       setCurrentFirmOfferNumber(currentFirmOffer);
-      }
+    }
   }
-
 
   function handleOfferSubmit(e) {
     e.preventDefault();
@@ -48,7 +50,14 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
           {Object.entries(summary).map(([key, value]) => {
             if (value !== false && key !== "termsStatus") {
               return (
-                <TopInfoBoxes key={key} termKey={key} value={value.toString()} account={account} currentSoftOfferNumber={currentSoftOfferNumber} currentFirmOfferNumber={currentFirmOfferNumber} />
+                <TopInfoBoxes
+                  key={key}
+                  termKey={key}
+                  value={value.toString()}
+                  account={account}
+                  currentSoftOfferNumber={currentSoftOfferNumber}
+                  currentFirmOfferNumber={currentFirmOfferNumber}
+                />
               );
             }
             return null;
@@ -79,7 +88,54 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
             </form>
           </div>
           <div className=" bg-blue-50 w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm ">
-            <div className="bg-green-50 w-5/6 sm:w-2/2 h-5/6 sm:h-2/2 mb-8 mr-6"></div>
+            <div class="bg-green-50 w-5/6 h-5/6 flex">
+              <div class="h-full w-1/5 bg-blue-100 flex flex-col items-center">
+                {softOfferAmuont ? (
+                  <h1 id="scale-in" className="mt-6">
+                    Your Offer
+                  </h1>
+                ) : null}
+                <br></br>
+                <p>{softOfferAmuont}</p>
+                {offerAcceptable ? (
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-auto mb-8 py-2 px-2 rounded focus:outline-none focus:shadow-outline">
+                    Accept Offer
+                  </button>
+                ) : null}
+              </div>
+
+              {softOfferAmuont ? (console.log("hey")
+              
+              
+              
+              
+              
+              
+              ) : null}
+
+              
+              <div className="h-full w-4/5 bg-red-100 flex flex-col">
+                <div className="h-1/4 bg-blue-200">
+                  <h1 className="mt-6 flex justify-center">
+                    To Be Within Range Of {summary.softRange.toNumber()}%
+                  </h1>
+                  <h1 className="mt-1 flex justify-center">
+                    The Other Parties Offer Must Be Within
+                  </h1>
+                  <h1 className="mt-1 flex justify-center">The Following Ranges</h1>
+                </div>
+                <div className="h-2/4 bg-green-200 flex">
+                  <div className="w-1/2 bg-blue-400 flex">
+                    <p className="mt-12 ml-6">Lowest:{100} </p>
+                  </div>
+                  <div className="w-1/2 bg-green-400 flex">
+                    <p className="mt-12 ml-6">Highest:{140} </p>
+                  </div>
+                </div>
+                <div className="h-1/4 bg-yellow-200"></div>
+              </div>
+              
+            </div>
           </div>
         </div>
       </div>

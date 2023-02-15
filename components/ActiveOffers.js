@@ -6,8 +6,8 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
   const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
   const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
   const [offerAcceptable, setOfferAcceptable] = useState(false);
-  const [lowestNumber, setlowestNumber] = useState("");
-  const [highestNumber, sethighestNumber] = useState("");
+  const [lowestNumber, setlowestNumber] = useState(0);
+  const [highestNumber, sethighestNumber] = useState(0);
 
   // console.log(summary.softRange.toNumber());
 
@@ -39,6 +39,10 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
 
   function setSoftOfferAmountFunction(e) {
     setSoftOfferAmuont(e.target.value);
+    setlowestNumber(e.target.value - (e.target.value * summary.softRange.toNumber()) / 100);
+    sethighestNumber(
+      Number(e.target.value) + (Number(e.target.value) * Number(summary.softRange.toNumber())) / 100
+    );
   }
 
   // console.lo);
@@ -104,37 +108,30 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                 ) : null}
               </div>
 
-              {softOfferAmuont ? (console.log("hey")
-              
-              
-              
-              
-              
-              
+              {softOfferAmuont ? (
+                <div className="h-full w-4/5 bg-red-100 flex flex-col">
+                  <div id="scale-in" className="h-1/4">
+                    <h1 className="mt-6 flex justify-center">
+                      To Be Within Range Of {summary.softRange.toNumber()}%
+                    </h1>
+                    <h1 className="mt-1 flex justify-center">
+                      The Other Parties Offer Must Be Within
+                    </h1>
+                    <h1 className="mt-1 flex justify-center">The Following Ranges</h1>
+                  </div>
+                  <div id="scale-in" className="h-2/4 bg-green-200 flex">
+                    <div className="w-1/2 bg-blue-400 flex">
+                      <p className="mt-12 ml-6">Lowest:{lowestNumber} </p>
+                      <br></br>
+                      <p className="mt-12 ml-6">Highest:{highestNumber} </p>
+                    </div>
+                    <div className="w-1/2 flex">
+                      {/* <p className="mt-12 ml-6">Highest:{highestNumber} </p> */}
+                    </div>
+                  </div>
+                  <div className="h-1/4 bg-yellow-200"></div>
+                </div>
               ) : null}
-
-              
-              <div className="h-full w-4/5 bg-red-100 flex flex-col">
-                <div className="h-1/4 bg-blue-200">
-                  <h1 className="mt-6 flex justify-center">
-                    To Be Within Range Of {summary.softRange.toNumber()}%
-                  </h1>
-                  <h1 className="mt-1 flex justify-center">
-                    The Other Parties Offer Must Be Within
-                  </h1>
-                  <h1 className="mt-1 flex justify-center">The Following Ranges</h1>
-                </div>
-                <div className="h-2/4 bg-green-200 flex">
-                  <div className="w-1/2 bg-blue-400 flex">
-                    <p className="mt-12 ml-6">Lowest:{100} </p>
-                  </div>
-                  <div className="w-1/2 bg-green-400 flex">
-                    <p className="mt-12 ml-6">Highest:{140} </p>
-                  </div>
-                </div>
-                <div className="h-1/4 bg-yellow-200"></div>
-              </div>
-              
             </div>
           </div>
         </div>

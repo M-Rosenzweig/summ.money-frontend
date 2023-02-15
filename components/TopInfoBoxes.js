@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function TopInfoBoxes({ termKey, value, account }) {
+function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber }) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
@@ -11,9 +11,9 @@ function TopInfoBoxes({ termKey, value, account }) {
         setTitle("Opponent");
       }
     } else if (termKey == "totalSoftOfferCap") {
-      setTitle("Soft Offer Cap");
+      setTitle("Soft Offers");
     } else if (termKey == "totalFirmOfferCap") {
-      setTitle("Firm Offer Cap");
+      setTitle("Firm Offers");
     } else if (termKey == "softRange") {
       setTitle("Soft Range");
     } else if (termKey == "firmRange") {
@@ -38,10 +38,15 @@ function TopInfoBoxes({ termKey, value, account }) {
       ? ternaryValue + "%"
       : ternaryValue;
 
+  let ternaryValueOfferStatus =
+    termKey == "totalSoftOfferCap"
+      ? currentSoftOfferNumber + " / " + ternaryValuePercent
+      : ternaryValuePercent;
+
   return (
     <div className="m-8 bg-blue-50 p-4 rounded-lg shadow-md">
       <p>{title}</p>
-      <p className="text-center">{ternaryValuePercent}</p>
+      <p className="text-center">{ternaryValueOfferStatus}</p>
     </div>
   );
 }

@@ -11,6 +11,8 @@ import ActiveOffers from "@/components/ActiveOffers";
 
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
+  const [softRoundActive, setSoftRoundActive] = useState("unaware");
+  const [currentSoftOffer, setCurrentSoftOffer] = useState("");
   // const [summInstanceAddress, setSummInstanceAddress] = useState("");
   let summInstanceAddress;
   let summInstance;
@@ -51,19 +53,31 @@ function summOffers({ address }) {
       termsStatus: summaryData[7],
     });
 
-    if(summary.termsStatus !== "" && summary.termsStatus) {
-      let summInstanceAddressVariable = await summTermsInstance.createdSumms(0)
-      summInstanceAddress = summInstanceAddressVariable; 
+    if (summary.termsStatus !== "" && summary.termsStatus) {
+      let summInstanceAddressVariable = await summTermsInstance.createdSumms(0);
+      summInstanceAddress = summInstanceAddressVariable;
       // console.log(summInstanceAddress);
-      getSummInstance(summInstanceAddress); 
+      getSummInstance(summInstanceAddress);
     }
 
-    async function getSummInstance(summInstanceAddress){
+    async function getSummInstance(summInstanceAddress) {
       // console.log(summInstanceAddress);
       summInstance = await initializeAndExportSummInstance(summInstanceAddress);
       console.log(summInstance);
+      getSummInfo(summInstance);
     }
 
+    async function getSummInfo(summInstance) {
+      let answer = await summInstance.softRoundActive();
+      setSoftRoundActive(answer);
+      let answer2 = await summInstance.currentSoftGiverOffer();
+      let answer3 = await summInstance.currentSoftReceiverOffer();
+      if (account == summary.creator) {
+        setCurrentSoftOffer(BigNumber.from(answer2).toNumber());
+      } else if (account == summary.opponent) {
+        setCurrentSoftOffer(BigNumber.from(answer3).toNumber());
+      }
+    }
 
     // summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
   }
@@ -103,7 +117,12 @@ function summOffers({ address }) {
           </div>
         </div>
       ) : summary.termsStatus !== "" && summary.termsStatus ? (
-        <ActiveOffers summary={summary} account={account} summInstanceAddress={summInstanceAddress} />
+        <ActiveOffers
+          summary={summary}
+          account={account}
+          softRoundActive={softRoundActive}
+          currentSoftOffer={currentSoftOffer}
+        />
       ) : null}
     </>
   );

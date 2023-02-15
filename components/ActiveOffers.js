@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
 
-function ActiveOffers({ summary, account, summInstanceAddress }) {
+function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer }) {
   const [softOfferAmuont, setSoftOfferAmuont] = useState("");
+  const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState('');
 
   useEffect(() => {
-    // console.log(`summInstanceAddress: ${summInstanceAddress}`);
-    // getSummInstanceAddress();
-  }, [account, summInstanceAddress]);
+    // console.log: }`);
+    // console.log(softRoundActive);
+    if(currentSoftOffer == false) {
+    setCurrentSoftOfferNumber(0);
+    console.log(currentSoftOffer == true);
+    }
+    // g();
+  }, [account]);
 
   // async function getSummInstance() {
   //   const summInstance = await summTermsInstance.createdSumms(0);
@@ -23,7 +29,7 @@ function ActiveOffers({ summary, account, summInstanceAddress }) {
     setSoftOfferAmuont(e.target.value);
   }
 
-  // console.log(summInstanceAddress);
+  // console.lo);
 
   return (
     <>
@@ -32,7 +38,7 @@ function ActiveOffers({ summary, account, summInstanceAddress }) {
           {Object.entries(summary).map(([key, value]) => {
             if (value !== false && key !== "termsStatus") {
               return (
-                <TopInfoBoxes key={key} termKey={key} value={value.toString()} account={account} />
+                <TopInfoBoxes key={key} termKey={key} value={value.toString()} account={account} currentSoftOfferNumber={currentSoftOfferNumber} />
               );
             }
             return null;
@@ -62,7 +68,9 @@ function ActiveOffers({ summary, account, summInstanceAddress }) {
               </button>
             </form>
           </div>
-          <div className="w-screen sm:w-4/5 bg-blue-50 h-4/5 sm:h-full">Right side</div>
+          <div className=" bg-blue-50 w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm ">
+            <div className="bg-green-50 w-5/6 sm:w-2/2 h-5/6 sm:h-2/2 mb-8 mr-6"></div>
+          </div>
         </div>
       </div>
     </>

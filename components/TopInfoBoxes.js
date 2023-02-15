@@ -27,7 +27,7 @@ function TopInfoBoxes({ termKey, value, account }) {
         setTitle("Creator");
       }
     }
-  }, [termKey]);
+  }, [termKey, account]);
 
   let ternaryValue =
     termKey == "opponent" || termKey == "creator"

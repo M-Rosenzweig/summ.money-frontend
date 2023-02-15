@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BigNumber } from "ethers";
 import TermCard from "../../../components/TermCard";
 import initializeAndExportSummTermsInstance from "../../../constants/specificSummTerms.js";
+import initializeAndExportSummInstance from "../../../constants/specificSumm.js";
 import SummTerms from "../../../constants/SummTerms.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import SideBarNegotiation from "@/components/SideBarNegotiation";
@@ -10,10 +11,9 @@ import ActiveOffers from "@/components/ActiveOffers";
 
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
-  const [summInstance, setSummInstance] = useState("");
-  // const [accepted, setAccepted] = useState("");
-  // const router = useRouter();
-
+  // const [summInstanceAddress, setSummInstanceAddress] = useState("");
+  let summInstanceAddress;
+  let summInstance;
   let summTermsInstance;
 
   const [summary, setSummary] = useState({
@@ -33,7 +33,7 @@ function summOffers({ address }) {
 
   async function getSummTermsInstance(address) {
     summTermsInstance = await initializeAndExportSummTermsInstance(address);
-    console.log(summTermsInstance);
+    // console.log(summTermsInstance);
     findOutStatusAndGetSummary(summTermsInstance);
   }
 
@@ -52,8 +52,15 @@ function summOffers({ address }) {
     });
 
     if(summary.termsStatus !== "" && summary.termsStatus) {
-      let summInstanceAddress = await summTermsInstance.createdSumms(0)
-      setSummInstance(summInstanceAddress); 
+      let summInstanceAddressVariable = await summTermsInstance.createdSumms(0)
+      summInstanceAddress = summInstanceAddressVariable; 
+      // console.log(summInstanceAddress);
+      getSummInstance(summInstanceAddress); 
+    }
+
+    async function getSummInstance(summInstanceAddress){
+      // console.log(summInstanceAddress);
+      summInstance = await initializeAndExportSummInstance(summInstanceAddress);
       console.log(summInstance);
     }
 
@@ -96,7 +103,7 @@ function summOffers({ address }) {
           </div>
         </div>
       ) : summary.termsStatus !== "" && summary.termsStatus ? (
-        <ActiveOffers summary={summary} account={account} summInstance={summInstance} />
+        <ActiveOffers summary={summary} account={account} summInstanceAddress={summInstanceAddress} />
       ) : null}
     </>
   );

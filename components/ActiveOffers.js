@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
 
-function ActiveOffers({ summary, account, summInstance }) {
+function ActiveOffers({ summary, account, summInstanceAddress }) {
   const [softOfferAmuont, setSoftOfferAmuont] = useState("");
 
-
   useEffect(() => {
-    console.log((`summInstance: ${summInstance}`))
-    // getSummInstance();
-  }, [account, summInstance]);
+    // console.log(`summInstanceAddress: ${summInstanceAddress}`);
+    // getSummInstanceAddress();
+  }, [account, summInstanceAddress]);
 
   // async function getSummInstance() {
   //   const summInstance = await summTermsInstance.createdSumms(0);
@@ -24,7 +23,7 @@ function ActiveOffers({ summary, account, summInstance }) {
     setSoftOfferAmuont(e.target.value);
   }
 
-  console.log(summInstance);
+  // console.log(summInstanceAddress);
 
   return (
     <>
@@ -39,8 +38,8 @@ function ActiveOffers({ summary, account, summInstance }) {
             return null;
           })}
         </div>
-        <div class="h-4/5 w-screen flex flex-col sm:flex-row">
-          <div class="w-screen sm:w-1/5 h-2/6 sm:h-full">
+        <div className="h-4/5 w-screen flex flex-col sm:flex-row">
+          <div className="w-screen sm:w-1/5 h-2/6 sm:h-full">
             <form className="bg-white p-7 rounded-lg shadow-sm mt-2" onSubmit={handleOfferSubmit}>
               <div className="mb-4 flex flex-wrap">
                 <label className="block text-gray-700 font-medium mb-2" htmlFor="opponent">
@@ -63,7 +62,7 @@ function ActiveOffers({ summary, account, summInstance }) {
               </button>
             </form>
           </div>
-          <div class="w-screen sm:w-4/5 bg-blue-50 h-4/5 sm:h-full">Right side</div>
+          <div className="w-screen sm:w-4/5 bg-blue-50 h-4/5 sm:h-full">Right side</div>
         </div>
       </div>
     </>

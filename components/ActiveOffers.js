@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
 
-function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer }) {
+function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, currentFirmOffer}) {
   const [softOfferAmuont, setSoftOfferAmuont] = useState("");
   const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState('');
+  const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState('');
 
   useEffect(() => {
     // console.log: }`);
     // console.log(softRoundActive);
-    if(currentSoftOffer == false) {
-    setCurrentSoftOfferNumber(0);
-    console.log(currentSoftOffer == true);
-    }
+    setInfo(); 
     // g();
   }, [account]);
 
-  // async function getSummInstance() {
-  //   const summInstance = await summTermsInstance.createdSumms(0);
-  //   console.log(summInstance);
-  // }
+  async function setInfo() {
+    console.log(currentSoftOffer);
+    if(currentSoftOffer == false) {
+      console.log("heyJayy")
+      setCurrentSoftOfferNumber(0);
+      } else if(currentSoftOffer == true) {
+      setCurrentSoftOfferNumber(currentSoftOffer);
+      }
+    if(currentFirmOffer == false) {
+      setCurrentFirmOfferNumber(0);
+      // console.log(currentFirmOffer == true);
+      } else if(currentFirmOffer == true) {
+      setCurrentFirmOfferNumber(currentFirmOffer);
+      }
+  }
+
 
   function handleOfferSubmit(e) {
     e.preventDefault();
@@ -38,7 +48,7 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer }) {
           {Object.entries(summary).map(([key, value]) => {
             if (value !== false && key !== "termsStatus") {
               return (
-                <TopInfoBoxes key={key} termKey={key} value={value.toString()} account={account} currentSoftOfferNumber={currentSoftOfferNumber} />
+                <TopInfoBoxes key={key} termKey={key} value={value.toString()} account={account} currentSoftOfferNumber={currentSoftOfferNumber} currentFirmOfferNumber={currentFirmOfferNumber} />
               );
             }
             return null;

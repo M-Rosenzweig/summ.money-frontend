@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber }) {
+function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber, currentFirmOfferNumber }) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
+    console.log(currentSoftOfferNumber); 
     if (termKey == "opponent") {
       if (account == value.toLowerCase()) {
         setTitle("You");
@@ -42,11 +43,15 @@ function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber }) {
     termKey == "totalSoftOfferCap"
       ? currentSoftOfferNumber + " / " + ternaryValuePercent
       : ternaryValuePercent;
+  let ternaryValueOfferStatus2 =
+    termKey == "totalFirmOfferCap"
+      ? currentFirmOfferNumber + " / " + ternaryValuePercent
+      : ternaryValueOfferStatus;
 
   return (
     <div className="m-8 bg-blue-50 p-4 rounded-lg shadow-md">
       <p>{title}</p>
-      <p className="text-center">{ternaryValueOfferStatus}</p>
+      <p className="text-center">{ternaryValueOfferStatus2}</p>
     </div>
   );
 }

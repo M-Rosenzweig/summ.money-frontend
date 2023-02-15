@@ -13,6 +13,7 @@ function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
   const [softRoundActive, setSoftRoundActive] = useState("unaware");
   const [currentSoftOffer, setCurrentSoftOffer] = useState("");
+  const [currentFirmOffer, setcurrentFirmOffer] = useState("");
   // const [summInstanceAddress, setSummInstanceAddress] = useState("");
   let summInstanceAddress;
   let summInstance;
@@ -70,12 +71,25 @@ function summOffers({ address }) {
     async function getSummInfo(summInstance) {
       let answer = await summInstance.softRoundActive();
       setSoftRoundActive(answer);
+      // set amount of soft offers
       let answer2 = await summInstance.currentSoftGiverOffer();
       let answer3 = await summInstance.currentSoftReceiverOffer();
-      if (account == summary.creator) {
+      console.log(BigNumber.from(answer2).toNumber());
+      console.log(typeof BigNumber.from(answer2).toNumber());
+      if (account == summary.creator.toLowerCase()) {
+        console.log("hey Moish")
         setCurrentSoftOffer(BigNumber.from(answer2).toNumber());
-      } else if (account == summary.opponent) {
+      } else if (account == summary.opponent.toLowerCase()) {
         setCurrentSoftOffer(BigNumber.from(answer3).toNumber());
+      }
+      // set amount of firm offers
+      let answer4 = await summInstance.currentFirmGiverOffer();
+      let answer5 = await summInstance.currentFirmReceiverOffer();
+      if (account == summary.creator) {
+        setcurrentFirmOffer(BigNumber.from(answer4).toNumber());
+      }
+      if (account == summary.opponent) {
+        setcurrentFirmOffer(BigNumber.from(answer5).toNumber());
       }
     }
 
@@ -122,6 +136,7 @@ function summOffers({ address }) {
           account={account}
           softRoundActive={softRoundActive}
           currentSoftOffer={currentSoftOffer}
+          currentFirmOffer={currentFirmOffer}
         />
       ) : null}
     </>

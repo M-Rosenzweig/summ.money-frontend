@@ -16,7 +16,7 @@ function SummCard({ address, lastDeployedSumm }) {
       <div id="parentWrap" className="flex flex-wrap">
         <Link href={`/summ-offers/${lastDeployedSumm}`}>
           <div id="scale-in" className="m-6 min-w-half max-w-xs max-h-fit cursor-pointer">
-            <Card className="bg-white p-10">
+            <Card className="bg-blue-100 p-10">
               <CardContent>
                 <Typography className="text-center" variant="h5" component="div">
                   {shortenedAddress}

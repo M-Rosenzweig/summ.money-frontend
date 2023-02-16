@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
+import SummRange from "@/components/SummRange";
 
 function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, currentFirmOffer }) {
-  const [softOfferAmuont, setSoftOfferAmuont] = useState("");
+  const [softOfferAmount, setSoftOfferAmount] = useState("");
   const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
   const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
   const [offerAcceptable, setOfferAcceptable] = useState(false);
   const [lowestNumber, setlowestNumber] = useState(0);
   const [highestNumber, sethighestNumber] = useState(0);
+
 
   // console.log(summary.softRange.toNumber());
 
@@ -38,14 +40,12 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
   }
 
   function setSoftOfferAmountFunction(e) {
-    setSoftOfferAmuont(e.target.value);
-    setlowestNumber(e.target.value - (e.target.value * summary.softRange.toNumber()) / 100);
-    sethighestNumber(
-      Number(e.target.value) + (Number(e.target.value) * Number(summary.softRange.toNumber())) / 100
-    );
-  }
+    const offerAmount = Number(e.target.value);
+    setlowestNumber(parseInt(offerAmount - (offerAmount * summary.softRange.toNumber()) / 100));
+    sethighestNumber(parseInt(offerAmount + (offerAmount * summary.softRange.toNumber()) / 100));
 
-  // console.lo);
+    setSoftOfferAmount(offerAmount);
+  }
 
   return (
     <>
@@ -79,7 +79,7 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                   id="softOfferAmount"
                   type="text"
                   name="softOfferAmount"
-                  value={softOfferAmuont}
+                  value={softOfferAmount}
                   onChange={setSoftOfferAmountFunction}
                 />
               </div>
@@ -94,21 +94,16 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
           <div className=" w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm rounded ">
             <div class=" w-5/6 h-5/6 flex">
               <div class="h-full w-1/5 flex flex-col items-center">
-                {softOfferAmuont ? (
+                {softOfferAmount ? (
                   <h1 id="scale-in" className="mt-6">
                     Your Offer
                   </h1>
                 ) : null}
                 <br></br>
-                <p>{softOfferAmuont}</p>
-                {offerAcceptable ? (
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-auto mb-8 py-2 px-2 rounded focus:outline-none focus:shadow-sm tline">
-                    Accept Offer
-                  </button>
-                ) : null}
+                <p>{softOfferAmount}</p>
               </div>
 
-              {softOfferAmuont ? (
+              {softOfferAmount ? (
                 <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
                     <h1 className="mt-6 flex justify-center">
@@ -120,18 +115,34 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                     <h1 className="mt-1 flex justify-center">The Following Numbers</h1>
                   </div>
                   <div id="scale-in" className="h-2/4 shadow-md flex">
-                    <div className="min-w-full shadow-sm flex">
-                      <p className="mt-12 ml-6 bg-red-200 h-6 rounded">Lowest:{lowestNumber} </p>
+                    <div className="min-w-1/2 shadow-sm flex bg-green-200">
+                      <p className="mt-12 ml-6 bg-red-200 h-6 rounded">
+                        Lowest:{parseInt(lowestNumber)}{" "}
+                      </p>
                       <br></br>
-                      <p className="mt-12 ml-6 bg-green-200 h-6 rounded">
-                        Highest:{highestNumber}{" "}
+                      <p className="mt-12 ml-6">Highest:{parseInt(highestNumber)} </p>
+                    </div>
+                    <div className="w-1/2 flex bg-red-200">
+                      <p className="mt-12 ml-6">
+                        {/* Summ-Range:{`${summLowRange} / ${summHighRange}`}{" "} CAN MAKE TERNARY.. */}
+                        <SummRange softOfferAmount={softOfferAmount} highestNumber={highestNumber} lowestNumber={lowestNumber}/>
                       </p>
                     </div>
-                    {/* <div className="w-1/2 flex">
-                      <p className="mt-12 ml-6">Highest:{highestNumber} </p>
-                    </div> */}
                   </div>
-                  <div className="h-1/4"></div>
+                  <div className="h-1/4 flex justify-center items-start mt-1">
+                    {/* {!offerAcceptable and we gave offer already... :)  ? (
+                      <div className="bg-blue-400 hover:bg-blue-300 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-sm tline">
+                        {`Waiting For ${
+                          account == summary.creator.toLowerCase() ? "Opponent" : "Creator"
+                        } Offer`}
+                      </div>
+                    ) : null} */}
+                    {offerAcceptable ? (
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white flex justify-center items-center mt-auto mb-auto py-3 px-2 rounded focus:outline-none focus:shadow-sm tline">
+                        Accept Offer
+                      </button>
+                    ) : null}
+                  </div>
                 </div>
               ) : null}
             </div>

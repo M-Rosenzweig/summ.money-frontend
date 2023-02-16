@@ -18,7 +18,7 @@ function SummRange({ softOfferAmount, highestNumber, lowestNumber }) {
     setSummHighRange(softOfferAmount + highRangeAddingNumber);
   }
 
-  return <div>{`Summ-Range: ${summLowRange} / ${summHighRange}`}</div>;
+  return <div className=" shadow-md p-2 rounded ml-6">{`Summ-Range: ${parseInt(summLowRange)} / ${parseInt(summHighRange)}`}</div>;
 }
 
 export default SummRange;

@@ -106,24 +106,24 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
               {softOfferAmount ? (
                 <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
-                    <h1 className="mt-6 flex justify-center">
+                    <h1 className="mt-6 flex justify-start ml-2">
                       To Be Within Range Of {summary.softRange.toNumber()}%
                     </h1>
-                    <h1 className="mt-1 flex justify-center">
-                      The Other Parties Offer Must Be Within
+                    <h1 className="mt-1 flex justify-start ml-2">
+                    { ` The ${account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"} Offer Must Be `}
                     </h1>
-                    <h1 className="mt-1 flex justify-center">The Following Numbers</h1>
+                    <h1 className="mt-1 flex justify-start ml-2">Within The Following Numbers</h1>
                   </div>
                   <div id="scale-in" className="h-2/4 shadow-md flex">
-                    <div className="min-w-1/2 shadow-sm flex bg-green-200">
-                      <p className="mt-12 ml-6 bg-red-200 h-6 rounded">
+                    <div className="w-1/3 shadow-sm ">
+                      <p className="mt-2 ml-2 bg-red-200 h-6 rounded  ">
                         Lowest:{parseInt(lowestNumber)}{" "}
                       </p>
                       <br></br>
-                      <p className="mt-12 ml-6">Highest:{parseInt(highestNumber)} </p>
+                      <p className="ml-2 bg-green-200">Highest:{parseInt(highestNumber)} </p>
                     </div>
-                    <div className="w-1/2 flex bg-red-200">
-                      <p className="mt-12 ml-6">
+                    <div className="w-2/3 flex">
+                      <p className="mt-6 ml-6">
                         {/* Summ-Range:{`${summLowRange} / ${summHighRange}`}{" "} CAN MAKE TERNARY.. */}
                         <SummRange softOfferAmount={softOfferAmount} highestNumber={highestNumber} lowestNumber={lowestNumber}/>
                       </p>

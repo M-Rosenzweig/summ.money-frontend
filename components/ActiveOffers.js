@@ -9,12 +9,14 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
   const [offerAcceptable, setOfferAcceptable] = useState(false);
   const [lowestNumber, setlowestNumber] = useState(0);
   const [highestNumber, sethighestNumber] = useState(0);
+  const [currentOffer, setCurrentOffer] = useState('');
 
 
   // console.log(summary.softRange.toNumber());
 
   useEffect(() => {
     setInfo();
+    console.log(currentSoftOfferNumber);
   }, [account]);
 
   async function setInfo() {
@@ -36,7 +38,9 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
 
   function handleOfferSubmit(e) {
     e.preventDefault();
+    setSoftOfferAmount(""); // reset the input field
     console.log("submit");
+    
   }
 
   function setSoftOfferAmountFunction(e) {
@@ -45,6 +49,7 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
     sethighestNumber(parseInt(offerAmount + (offerAmount * summary.softRange.toNumber()) / 100));
 
     setSoftOfferAmount(offerAmount);
+    setCurrentOffer(offerAmount);
   }
 
   return (
@@ -92,18 +97,18 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
             </form>
           </div>
           <div className=" w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm rounded ">
-            <div class=" w-5/6 h-5/6 flex">
-              <div class="h-full w-1/5 flex flex-col items-center">
-                {softOfferAmount ? (
+            <div className=" w-full h-5/6 flex">
+              <div className="h-full w-1/5 flex flex-col items-center">
+                {currentOffer ? (
                   <h1 id="scale-in" className="mt-6">
                     Your Offer
                   </h1>
                 ) : null}
                 <br></br>
-                <p>{softOfferAmount}</p>
+                <p>{currentOffer}</p>
               </div>
 
-              {softOfferAmount ? (
+              {currentOffer ? (
                 <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
                     <h1 className="mt-6 flex justify-start ml-2">
@@ -125,7 +130,7 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                     <div className="w-2/3 flex">
                       <p className="mt-6 ml-6">
                         {/* Summ-Range:{`${summLowRange} / ${summHighRange}`}{" "} CAN MAKE TERNARY.. */}
-                        <SummRange softOfferAmount={softOfferAmount} highestNumber={highestNumber} lowestNumber={lowestNumber}/>
+                        <SummRange currentOffer={currentOffer} highestNumber={highestNumber} lowestNumber={lowestNumber}/>
                       </p>
                     </div>
                   </div>

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 
-function SummRange({ softOfferAmount, highestNumber, lowestNumber }) {
+function SummRange({ currentOffer, highestNumber, lowestNumber }) {
   const [summLowRange, setSummLowRange] = useState(0);
   const [summHighRange, setSummHighRange] = useState(0);
 
   useEffect(() => {
     setInfo();
-  }, [softOfferAmount]);
+  }, [currentOffer]);
 
   function setInfo() {
     // console.log(`highestNumber: ${highestNumber}`);
     // console.log(`lowestNumber: ${lowestNumber}`);
-    // console.log(`softOfferAmount: ${softOfferAmount}`);
-    let lowRangeAddingNumber = (softOfferAmount - lowestNumber) / 2;
-    setSummLowRange(softOfferAmount - lowRangeAddingNumber);
-    let highRangeAddingNumber = (highestNumber - softOfferAmount) / 2;
-    setSummHighRange(softOfferAmount + highRangeAddingNumber);
+    // console.log(`currentOffer: ${currentOffer}`);
+    let lowRangeAddingNumber = (currentOffer - lowestNumber) / 2;
+    setSummLowRange(currentOffer - lowRangeAddingNumber);
+    let highRangeAddingNumber = (highestNumber - currentOffer) / 2;
+    setSummHighRange(currentOffer + highRangeAddingNumber);
   }
 
   return <div className=" shadow-md p-2 rounded ml-6">{`Summ-Range: ${parseInt(summLowRange)} / ${parseInt(summHighRange)}`}</div>;

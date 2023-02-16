@@ -4,7 +4,7 @@ function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber, current
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    console.log(currentSoftOfferNumber); 
+    console.log(currentSoftOfferNumber);
     if (termKey == "opponent") {
       if (account == value.toLowerCase()) {
         setTitle("You");

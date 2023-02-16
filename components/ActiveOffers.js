@@ -84,16 +84,16 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                 />
               </div>
               <button
-                className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-sm tline"
                 type="submit"
               >
                 Submit
               </button>
             </form>
           </div>
-          <div className=" bg-blue-50 w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm ">
-            <div class="bg-green-50 w-5/6 h-5/6 flex">
-              <div class="h-full w-1/5 bg-blue-100 flex flex-col items-center">
+          <div className=" w-screen sm:w-4/5 h-4/5 sm:h-full flex justify-center items-center shadow-sm rounded ">
+            <div class=" w-5/6 h-5/6 flex">
+              <div class="h-full w-1/5 flex flex-col items-center">
                 {softOfferAmuont ? (
                   <h1 id="scale-in" className="mt-6">
                     Your Offer
@@ -102,14 +102,14 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                 <br></br>
                 <p>{softOfferAmuont}</p>
                 {offerAcceptable ? (
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-auto mb-8 py-2 px-2 rounded focus:outline-none focus:shadow-outline">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold mt-auto mb-8 py-2 px-2 rounded focus:outline-none focus:shadow-sm tline">
                     Accept Offer
                   </button>
                 ) : null}
               </div>
 
               {softOfferAmuont ? (
-                <div className="h-full w-4/5 bg-red-100 flex flex-col">
+                <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
                     <h1 className="mt-6 flex justify-center">
                       To Be Within Range Of {summary.softRange.toNumber()}%
@@ -117,19 +117,21 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                     <h1 className="mt-1 flex justify-center">
                       The Other Parties Offer Must Be Within
                     </h1>
-                    <h1 className="mt-1 flex justify-center">The Following Ranges</h1>
+                    <h1 className="mt-1 flex justify-center">The Following Numbers</h1>
                   </div>
-                  <div id="scale-in" className="h-2/4 bg-green-200 flex">
-                    <div className="w-1/2 bg-blue-400 flex">
-                      <p className="mt-12 ml-6">Lowest:{lowestNumber} </p>
+                  <div id="scale-in" className="h-2/4 shadow-md flex">
+                    <div className="min-w-full shadow-sm flex">
+                      <p className="mt-12 ml-6 bg-red-200 h-6 rounded">Lowest:{lowestNumber} </p>
                       <br></br>
+                      <p className="mt-12 ml-6 bg-green-200 h-6 rounded">
+                        Highest:{highestNumber}{" "}
+                      </p>
+                    </div>
+                    {/* <div className="w-1/2 flex">
                       <p className="mt-12 ml-6">Highest:{highestNumber} </p>
-                    </div>
-                    <div className="w-1/2 flex">
-                      {/* <p className="mt-12 ml-6">Highest:{highestNumber} </p> */}
-                    </div>
+                    </div> */}
                   </div>
-                  <div className="h-1/4 bg-yellow-200"></div>
+                  <div className="h-1/4"></div>
                 </div>
               ) : null}
             </div>

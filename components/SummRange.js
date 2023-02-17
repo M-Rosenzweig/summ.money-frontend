@@ -18,7 +18,7 @@ function SummRange({ currentOffer, highestNumber, lowestNumber }) {
     setSummHighRange(currentOffer + highRangeAddingNumber);
   }
 
-  return <div className=" shadow-md p-2 rounded ml-6">{`Summ-Range: ${parseInt(summLowRange)} / ${parseInt(summHighRange)}`}</div>;
+  return <div className=" shadow-md p-2 rounded ml-6">{`Summ-Range: ${parseInt(summLowRange)} - ${parseInt(summHighRange)}`}</div>;
 }
 
 export default SummRange;

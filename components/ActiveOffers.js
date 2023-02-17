@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
 import TopInfoBoxes from "@/components/TopInfoBoxes";
 import SummRange from "@/components/SummRange";
+import SummAbi from "../constants/Summ.json";
+import { useMoralis, useWeb3Contract } from "react-moralis";
 
-function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, currentFirmOffer }) {
+function ActiveOffers({
+  summary,
+  account,
+  softRoundActive,
+  currentSoftOffer,
+  currentFirmOffer,
+  specificSummAddress,
+}) {
   const [softOfferAmount, setSoftOfferAmount] = useState("");
   const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
   const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
   const [offerAcceptable, setOfferAcceptable] = useState(false);
   const [lowestNumber, setlowestNumber] = useState(0);
   const [highestNumber, sethighestNumber] = useState(0);
-  const [currentOffer, setCurrentOffer] = useState('');
+  const [currentOffer, setCurrentOffer] = useState("");
+  const [functionName, setFunctionName] = useState("");
 
+  const { runContractFunction } = useWeb3Contract();
 
   // console.log(summary.softRange.toNumber());
 
   useEffect(() => {
     setInfo();
-    console.log(currentSoftOfferNumber);
+    // console.log(currentSoftOfferNumber);
+    console.log(specificSummAddress); 
   }, [account]);
 
   async function setInfo() {
@@ -34,13 +46,44 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
     } else if (currentFirmOffer == true) {
       setCurrentFirmOfferNumber(currentFirmOffer);
     }
+
+    if(account == summary.opponent.toLowerCase() && softRoundActive == true) {
+      console.log("this should hit")
+      setFunctionName("initiateSoftReceiverOffer");
+      console.log(functionName); 
+    } else if(account == summary.opponent.toLowerCase() && softRoundActive == false) {
+      setFunctionName("initiateFirmReceiverOffer");
+    }
   }
 
-  function handleOfferSubmit(e) {
+  async function handleOfferSubmit(e) {
     e.preventDefault();
+    console.log("this is the function name Jerryyyy");
+    console.log(functionName);
+    console.log(functionName);
+
+
+    const offerDetails = {
+      abi: SummAbi,
+      contractAddress: specificSummAddress,
+      functionName: functionName,
+      params: {
+        _amount: softOfferAmount,
+      },
+    };
+    await runContractFunction({
+      params: offerDetails,
+      onSuccess: (tx) => {
+        alert("Success: You have initiated an offer to the blockchain.");
+        console.log(`this is a success message: ${tx}`);
+      },
+      onError: (error) => {
+        alert("Error: " + error.message + "");
+        console.log(`this is an error message: ${error}`);
+      },
+    });
+
     setSoftOfferAmount(""); // reset the input field
-    console.log("submit");
-    
   }
 
   function setSoftOfferAmountFunction(e) {
@@ -112,10 +155,14 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                 <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
                     <h1 className="mt-6 flex justify-start ml-2">
-                      To Be Within Range Of {summary.softRange.toNumber()}%
+                      {` The ${
+                        account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"
+                      } Offer Must Be `}
                     </h1>
                     <h1 className="mt-1 flex justify-start ml-2">
-                    { ` The ${account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"} Offer Must Be `}
+                      {` The ${
+                        account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"
+                      } Offer Must Be `}
                     </h1>
                     <h1 className="mt-1 flex justify-start ml-2">Within The Following Numbers</h1>
                   </div>
@@ -130,7 +177,11 @@ function ActiveOffers({ summary, account, softRoundActive, currentSoftOffer, cur
                     <div className="w-2/3 flex">
                       <p className="mt-6 ml-6">
                         {/* Summ-Range:{`${summLowRange} / ${summHighRange}`}{" "} CAN MAKE TERNARY.. */}
-                        <SummRange currentOffer={currentOffer} highestNumber={highestNumber} lowestNumber={lowestNumber}/>
+                        <SummRange
+                          currentOffer={currentOffer}
+                          highestNumber={highestNumber}
+                          lowestNumber={lowestNumber}
+                        />
                       </p>
                     </div>
                   </div>

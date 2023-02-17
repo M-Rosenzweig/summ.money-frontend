@@ -31,8 +31,6 @@ function createSummTermsV2() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // function createSummTerms(address payable _opponent, uint _softOffers,
-    // uint _firmOffers, uint _softRange, uint _firmRange, uint _penaltyPercent)
 
     const termDetails = {
       abi: SummFactoryAbi,

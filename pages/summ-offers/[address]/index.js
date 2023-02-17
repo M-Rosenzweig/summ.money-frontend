@@ -14,7 +14,8 @@ function summOffers({ address }) {
   const [softRoundActive, setSoftRoundActive] = useState("unaware");
   const [currentSoftOffer, setCurrentSoftOffer] = useState("");
   const [currentFirmOffer, setcurrentFirmOffer] = useState("");
-  // const [summInstanceAddress, setSummInstanceAddress] = useState("");
+  const [specificSummAddress, setSpecificSummAddress] = useState("");
+
   let summInstanceAddress;
   let summInstance;
   let summTermsInstance;
@@ -57,6 +58,7 @@ function summOffers({ address }) {
     if (summary.termsStatus !== "" && summary.termsStatus) {
       let summInstanceAddressVariable = await summTermsInstance.createdSumms(0);
       summInstanceAddress = summInstanceAddressVariable;
+      setSpecificSummAddress(summInstanceAddress);
       // console.log(summInstanceAddress);
       getSummInstance(summInstanceAddress);
     }
@@ -75,7 +77,6 @@ function summOffers({ address }) {
       let answer2 = await summInstance.currentSoftGiverOffer();
       let answer3 = await summInstance.currentSoftReceiverOffer();
       console.log(BigNumber.from(answer2).toNumber());
-      console.log(typeof BigNumber.from(answer2).toNumber());
       if (account == summary.creator.toLowerCase()) {
         console.log("hey Moish")
         setCurrentSoftOffer(BigNumber.from(answer2).toNumber());
@@ -137,6 +138,7 @@ function summOffers({ address }) {
           softRoundActive={softRoundActive}
           currentSoftOffer={currentSoftOffer}
           currentFirmOffer={currentFirmOffer}
+          specificSummAddress={specificSummAddress}
         />
       ) : null}
     </>

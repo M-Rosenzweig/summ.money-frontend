@@ -42,12 +42,12 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
 
   let ternaryValueOfferStatus = 
     termKey == "totalSoftOfferCap"  ?  
-    `${currentOffers.softReceiverOffer} / ${value} | ${currentOffers.softGiverOffer} / ${value}` :
+    `${currentOffers.softGiverOffer} / ${value} | ${currentOffers.softReceiverOffer} / ${value}` :
     ternaryValuePercent;
     
   let ternaryValueOfferStatus2 = 
   termKey == "totalFirmOfferCap"  ?
-  `${currentOffers.firmReceiverOffer} / ${value} | ${currentOffers.firmGiverOffer} / ${value}` :
+  `${currentOffers.firmGiverOffer} / ${value} | ${currentOffers.firmReceiverOffer} / ${value}` :
   ternaryValueOfferStatus;
 
   //   termKey == "totalSoftOfferCap"

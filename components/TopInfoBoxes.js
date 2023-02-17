@@ -1,10 +1,11 @@
+import { AccordionSummary } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber, currentFirmOfferNumber }) {
+function TopInfoBoxes({ termKey, value, account, currentOffers }) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    console.log(currentSoftOfferNumber);
+    // console.log(currentOffers);
     if (termKey == "opponent") {
       if (account == value.toLowerCase()) {
         setTitle("You");
@@ -23,7 +24,7 @@ function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber, current
       setTitle("Penalty Percent");
     } else if (termKey == "creator") {
       if (account == value.toLowerCase()) {
-        setTitle("You");
+        setTitle("Creator");
       } else {
         setTitle("Creator");
       }
@@ -39,14 +40,23 @@ function TopInfoBoxes({ termKey, value, account, currentSoftOfferNumber, current
       ? ternaryValue + "%"
       : ternaryValue;
 
-  let ternaryValueOfferStatus =
-    termKey == "totalSoftOfferCap"
-      ? currentSoftOfferNumber + " / " + ternaryValuePercent
-      : ternaryValuePercent;
-  let ternaryValueOfferStatus2 =
-    termKey == "totalFirmOfferCap"
-      ? currentFirmOfferNumber + " / " + ternaryValuePercent
-      : ternaryValueOfferStatus;
+  let ternaryValueOfferStatus = 
+    termKey == "totalSoftOfferCap"  ?  
+    `${currentOffers.softReceiverOffer} / ${value} | ${currentOffers.softGiverOffer} / ${value}` :
+    ternaryValuePercent;
+    
+  let ternaryValueOfferStatus2 = 
+  termKey == "totalFirmOfferCap"  ?
+  `${currentOffers.firmReceiverOffer} / ${value} | ${currentOffers.firmGiverOffer} / ${value}` :
+  ternaryValueOfferStatus;
+
+  //   termKey == "totalSoftOfferCap"
+  //     ? currentSoftOfferNumber + " / " + ternaryValuePercent
+  //     : ternaryValuePercent;
+  // let ternaryValueOfferStatus2 =
+  //   termKey == "totalFirmOfferCap"
+  //     ? currentFirmOfferNumber + " / " + ternaryValuePercent
+  //     : ternaryValueOfferStatus;
 
   return (
     <div className="m-8 bg-blue-50 p-4 rounded-lg shadow-md">

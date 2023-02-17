@@ -12,9 +12,13 @@ import ActiveOffers from "@/components/ActiveOffers";
 function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
   const [softRoundActive, setSoftRoundActive] = useState("unaware");
-  const [currentSoftOffer, setCurrentSoftOffer] = useState("");
-  const [currentFirmOffer, setcurrentFirmOffer] = useState("");
   const [specificSummAddress, setSpecificSummAddress] = useState("");
+  const [currentOffers, setCurrentOffers] = useState({
+    softReceiverOffer: "",
+    softGiverOffer: "",
+    firmReceiverOffer: "", 
+    firmGiverOffer: "",
+  }); 
 
   let summInstanceAddress;
   let summInstance;
@@ -66,7 +70,7 @@ function summOffers({ address }) {
     async function getSummInstance(summInstanceAddress) {
       // console.log(summInstanceAddress);
       summInstance = await initializeAndExportSummInstance(summInstanceAddress);
-      console.log(summInstance);
+      // console.log(summInstance);
       getSummInfo(summInstance);
     }
 
@@ -76,22 +80,28 @@ function summOffers({ address }) {
       // set amount of soft offers
       let answer2 = await summInstance.currentSoftGiverOffer();
       let answer3 = await summInstance.currentSoftReceiverOffer();
-      console.log(BigNumber.from(answer2).toNumber());
-      if (account == summary.creator.toLowerCase()) {
-        console.log("hey Moish")
-        setCurrentSoftOffer(BigNumber.from(answer2).toNumber());
-      } else if (account == summary.opponent.toLowerCase()) {
-        setCurrentSoftOffer(BigNumber.from(answer3).toNumber());
-      }
-      // set amount of firm offers
       let answer4 = await summInstance.currentFirmGiverOffer();
       let answer5 = await summInstance.currentFirmReceiverOffer();
-      if (account == summary.creator) {
-        setcurrentFirmOffer(BigNumber.from(answer4).toNumber());
-      }
-      if (account == summary.opponent) {
-        setcurrentFirmOffer(BigNumber.from(answer5).toNumber());
-      }
+
+      setCurrentOffers({
+        softReceiverOffer: BigNumber.from(answer3).toNumber(),
+        softGiverOffer: BigNumber.from(answer2).toNumber(),
+        firmReceiverOffer: BigNumber.from(answer5).toNumber(),
+        firmGiverOffer: BigNumber.from(answer4).toNumber(),
+      });
+
+      currentOffers.softReceiverOffer == "undefined" ? setCurrentOffers({softReceiverOffer: 0}) : null;
+      currentOffers.softGiverOffer == "undefined" ? setCurrentOffers({softGiverOffer: 0}) : null;
+      currentOffers.firmReceiverOffer == "undefined" ? setCurrentOffers({firmReceiverOffer: 0}) : null;
+      currentOffers.firmGiverOffer == "undefined" ? setCurrentOffers({firmGiverOffer: 0}) : null;
+
+    
+      // if (account == summary.creator) {
+      //   setcurrentFirmOffer(BigNumber.from(answer4).toNumber());
+      // }
+      // if (account == summary.opponent) {
+      //   setcurrentFirmOffer(BigNumber.from(answer5).toNumber());
+      // }
     }
 
     // summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
@@ -136,8 +146,7 @@ function summOffers({ address }) {
           summary={summary}
           account={account}
           softRoundActive={softRoundActive}
-          currentSoftOffer={currentSoftOffer}
-          currentFirmOffer={currentFirmOffer}
+          currentOffers={currentOffers}
           specificSummAddress={specificSummAddress}
         />
       ) : null}

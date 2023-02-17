@@ -4,14 +4,7 @@ import SummRange from "@/components/SummRange";
 import SummAbi from "../constants/Summ.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 
-function ActiveOffers({
-  summary,
-  account,
-  softRoundActive,
-  currentSoftOffer,
-  currentFirmOffer,
-  specificSummAddress,
-}) {
+function ActiveOffers({ summary, account, softRoundActive, currentOffers, specificSummAddress }) {
   const [softOfferAmount, setSoftOfferAmount] = useState("");
   const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
   const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
@@ -28,40 +21,26 @@ function ActiveOffers({
   useEffect(() => {
     setInfo();
     // console.log(currentSoftOfferNumber);
-    console.log(specificSummAddress); 
-  }, [account]);
+    // console.log("this is the current offers vibessssssss")
+    // console.log(currentOffers);
+  }, [account, currentOffers]);
 
   async function setInfo() {
-    // console.log(currentSoftOffer);
-    // console.log("jaaaa")
-    if (currentSoftOffer == false) {
-      // console.log("heyJayy");
-      setCurrentSoftOfferNumber(0);
-    } else if (currentSoftOffer == true) {
-      setCurrentSoftOfferNumber(currentSoftOffer);
-    }
-    if (currentFirmOffer == false) {
-      setCurrentFirmOfferNumber(0);
-      // console.log(currentFirmOffer == true);
-    } else if (currentFirmOffer == true) {
-      setCurrentFirmOfferNumber(currentFirmOffer);
-    }
-
-    if(account == summary.opponent.toLowerCase() && softRoundActive == true) {
-      console.log("this should hit")
+    if (account == summary.opponent.toLowerCase() && softRoundActive == true) {
       setFunctionName("initiateSoftReceiverOffer");
-      console.log(functionName); 
-    } else if(account == summary.opponent.toLowerCase() && softRoundActive == false) {
+    } else if (account == summary.opponent.toLowerCase() && softRoundActive == false) {
       setFunctionName("initiateFirmReceiverOffer");
+    } else if (account == summary.creator.toLowerCase() && softRoundActive == true) {
+      setFunctionName("initiateSoftGiverOffer");
+    } else if (account == summary.creator.toLowerCase() && softRoundActive == false) {
+      setFunctionName("initiateFirmGiverOffer");
     }
   }
 
   async function handleOfferSubmit(e) {
     e.preventDefault();
-    console.log("this is the function name Jerryyyy");
-    console.log(functionName);
-    console.log(functionName);
-
+    // console.log("this is the function name Jerryyyy");
+    // console.log(functionName);
 
     const offerDetails = {
       abi: SummAbi,
@@ -107,8 +86,7 @@ function ActiveOffers({
                   termKey={key}
                   value={value.toString()}
                   account={account}
-                  currentSoftOfferNumber={currentSoftOfferNumber}
-                  currentFirmOfferNumber={currentFirmOfferNumber}
+                  currentOffers={currentOffers}
                 />
               );
             }

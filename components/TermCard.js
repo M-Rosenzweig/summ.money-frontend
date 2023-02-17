@@ -3,22 +3,23 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 
-function TermCard({ termKey, value }) {
+function TermCard({ termKey, value, requirementText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [requirement, setRequirement] = useState("");
+  // const [size, setSize] = useState(requirementText ? "smallBox" : "mediumBox");
 
   // useEffect(() => {
   useEffect(() => {
     if (termKey == "opponent") {
-      setDescription("The address you would like to negotiate with.");
+      setDescription("The address of the opponent in this Summ.");
       setRequirement("Must be a valid Ethereum address that is not your own.");
       setTitle("Opponent");
-    } else if (termKey == "softOfferCap") {
+    } else if (termKey == "totalSoftOfferCap") {
       setDescription("The maximum amount of soft offer rounds.");
       setRequirement("The amount of soft offer rounds cannot exceed 10 or be below 0.");
       setTitle("Soft Offer Cap");
-    } else if (termKey == "firmOfferCap") {
+    } else if (termKey == "totalFirmOfferCap") {
       setDescription("The maximum amount of firm offers rounds.");
       setRequirement("The amount of firm offers cannot exceed 10.");
       setTitle("Firm Offer Cap");
@@ -34,6 +35,9 @@ function TermCard({ termKey, value }) {
       setDescription("The percentage used for penalties in firm round of average number.");
       setRequirement("Must be greater than 0 and less than 20.");
       setTitle("Penalty Percent");
+    } else if (termKey == "creator") {
+      setDescription("The address of the creator of the negotiation.");
+      setTitle("Creator");
     }
   }, [termKey]);
 
@@ -41,25 +45,32 @@ function TermCard({ termKey, value }) {
     return null;
   }
 
-  let ternaryValue = termKey == "opponent" ? value.slice(0, 5) + "..." + value.slice(-5) : value;
+  let ternaryValue =
+    termKey == "opponent" || termKey == "creator"
+      ? value.slice(0, 5) + "..." + value.slice(-5)
+      : value;
+  let ternaryValuePercent =
+    termKey == "softRange" || termKey == "firmRange" || termKey == "penaltyPercent"
+      ? ternaryValue + "%"
+      : ternaryValue;
 
   return (
     <>
       <div id="parentWrap" className="flex flex-wrap">
-        <div id="scale-in" className="m-3 min-w-half max-w-xs max-h-fit">
+        <div id="scale-in" className="m-4 max-w-xs max-h-fit minWidth ">
           <Card className="bg-white p-4">
             <CardContent>
               <Typography className="text-center" variant="h5" component="div">
                 {title}
               </Typography>
-              <Typography className="text-center" color="text.bold">
-                {ternaryValue}
+              <Typography className="text-center font-extrabold" color="text.bold">
+                {ternaryValuePercent}
               </Typography>
               <Typography variant="body2">
                 {description}
                 <br />
                 <Typography className="text-red-300 text-xs" variant="body2">
-                  {`Requirement: ${requirement}`}
+                  {requirementText ? `Requirement: ${requirement}` : null}
                 </Typography>
               </Typography>
             </CardContent>
@@ -71,3 +82,5 @@ function TermCard({ termKey, value }) {
 }
 
 export default TermCard;
+
+

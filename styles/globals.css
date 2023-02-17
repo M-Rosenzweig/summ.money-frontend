@@ -34,15 +34,25 @@
   width: 75vw;
 }
 
-.flexParentSumms{
+.flexParentSumms {
   display: flex;
   flex-wrap: wrap;
   flex-direction: rows;
   justify-content: space-around;
   align-items: center;
   /* background-color: black;  */
-  width: 100vw;
+  width: 80%;
+  height: 100%;
+}
+
+.negotiationControls {
+  width: 20%;
+
   height: 100vh;
+}
+
+.minWidth {
+  min-width: 20 rem;
 }
 
 .flexChild {
@@ -50,10 +60,6 @@
   justify-content: space-around;
   flex-wrap: wrap;
   flex-direction: rows;
-}
-
-#TestMySumms{
-
 }
 
 .mySummParentCard {

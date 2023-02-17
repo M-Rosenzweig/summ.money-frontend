@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import TermCard from "../../../components/TermCard";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import networkMapping from "../../../constants/networkMapping.json";
 import SummFactoryAbi from "../../../constants/SummFactory.json";
-// import SummTermsAbi from "../../../constants/SummTerms.json";
 import { ethers } from "ethers";
 
 function createSummTermsV2() {
@@ -11,25 +10,13 @@ function createSummTermsV2() {
   const { runContractFunction } = useWeb3Contract();
   const provider = new ethers.providers.InfuraProvider("goerli");
 
-  // let chainString = "31337";
-  // if (chainId == 1337) {
-  //   chainString = "31337";
-  // } else {
-  // }
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
   const summFactoryAddress = networkMapping[chainString].summFactory[0];
 
-  // useEffect(() => {
-  //   // console.log(chainId);
-  //   // console.log(chainString);
-  //   // console.log(summFactoryAddress);
-  //   // console.log(SummFactoryAbi)
-  // }, [chainId]);
-
   const [formData, setFormData] = useState({
     opponent: "",
-    softOfferCap: "",
-    firmOfferCap: "",
+    totalSoftOfferCap: "",
+    totalFirmOfferCap: "",
     softRange: "",
     firmRange: "",
     penaltyPercent: "",
@@ -44,8 +31,6 @@ function createSummTermsV2() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // function createSummTerms(address payable _opponent, uint _softOffers,
-    // uint _firmOffers, uint _softRange, uint _firmRange, uint _penaltyPercent)
 
     const termDetails = {
       abi: SummFactoryAbi,
@@ -53,8 +38,8 @@ function createSummTermsV2() {
       functionName: "createSummTerms",
       params: {
         _opponent: formData.opponent,
-        _softOffers: formData.softOfferCap,
-        _firmOffers: formData.firmOfferCap,
+        _softOffers: formData.totalSoftOfferCap,
+        _firmOffers: formData.totalFirmOfferCap,
         _softRange: formData.softRange,
         _firmRange: formData.firmRange,
         _penaltyPercent: formData.penaltyPercent,
@@ -69,7 +54,7 @@ function createSummTermsV2() {
       },
       onError: (error) => {
         alert("Error: " + error.message + "")
-        console.log(`this is an error message: ${error}`);
+        console.log(`this is an error message: ${error.message}`);
       },
     });
 
@@ -77,8 +62,8 @@ function createSummTermsV2() {
 
     setFormData({
       opponent: "",
-      softOfferCap: "",
-      firmOfferCap: "",
+      totalSoftOfferCap: "",
+      totalFirmOfferCap: "",
       softRange: "",
       firmRange: "",
       penaltyPercent: "",
@@ -110,28 +95,28 @@ function createSummTermsV2() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="softOfferCap">
+            <label className="block text-gray-700 font-medium mb-2" htmlFor="totalSoftOfferCap">
               Soft Offer Cap
             </label>
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-              id="softOfferCap"
+              id="totalSoftOfferCap"
               type="text"
-              name="softOfferCap"
-              value={formData.softOfferCap}
+              name="totalSoftOfferCap"
+              value={formData.totalSoftOfferCap}
               onChange={handleChange}
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="firmOfferCap">
+            <label className="block text-gray-700 font-medium mb-2" htmlFor="totalFirmOfferCap">
               Firm Offer Cap
             </label>
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-              id="firmOfferCap"
+              id="totalFirmOfferCap"
               type="text"
-              name="firmOfferCap"
-              value={formData.firmOfferCap}
+              name="totalFirmOfferCap"
+              value={formData.totalFirmOfferCap}
               onChange={handleChange}
             />
           </div>
@@ -186,7 +171,7 @@ function createSummTermsV2() {
           <div className="flexChild">
             {Object.entries(formData).map(([key, value]) => {
               if (value !== false) {
-                return <TermCard key={key} value={value} termKey={key} />;
+                return <TermCard key={key} value={value} termKey={key} requirementText={true} />;
               }
               return null;
             })}

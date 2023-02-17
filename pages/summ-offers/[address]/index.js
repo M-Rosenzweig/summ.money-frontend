@@ -1,10 +1,29 @@
-import React, {useState, useEffect} from 'react'; 
+import React, { useState, useEffect } from "react";
+import { BigNumber } from "ethers";
+import TermCard from "../../../components/TermCard";
 import initializeAndExportSummTermsInstance from "../../../constants/specificSummTerms.js";
+import initializeAndExportSummInstance from "../../../constants/specificSumm.js";
+import SummTerms from "../../../constants/SummTerms.json";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import SideBarNegotiation from "@/components/SideBarNegotiation";
+import ActiveOffers from "@/components/ActiveOffers";
+// import { useRouter } from 'next/router';
 
-function summOffers({address}) {
+function summOffers({ address }) {
+  const { isWeb3Enabled, account } = useMoralis();
+  const [softRoundActive, setSoftRoundActive] = useState("unaware");
+  const [specificSummAddress, setSpecificSummAddress] = useState("");
+  const [currentOffers, setCurrentOffers] = useState({
+    softReceiverOffer: "",
+    softGiverOffer: "",
+    firmReceiverOffer: "", 
+    firmGiverOffer: "",
+  }); 
 
-  let summTermsInstance; 
-  const [status, setStatus] = useState("");
+  let summInstanceAddress;
+  let summInstance;
+  let summTermsInstance;
+
   const [summary, setSummary] = useState({
     creator: "",
     opponent: "",
@@ -17,52 +36,122 @@ function summOffers({address}) {
   });
 
   useEffect(() => {
-    getSummTermsInstance(address); 
-  },[status])
+    getSummTermsInstance(address);
+  }, [account, summary.termsStatus]);
 
   async function getSummTermsInstance(address) {
-    summTermsInstance = await initializeAndExportSummTermsInstance(address); 
-    // console.log("summTermsInstance", summTermsInstance);
+    summTermsInstance = await initializeAndExportSummTermsInstance(address);
+    // console.log(summTermsInstance);
     findOutStatusAndGetSummary(summTermsInstance);
   }
 
   async function findOutStatusAndGetSummary(summTermsInstance) {
-    const contractStatus = await summTermsInstance.termsStatus();
-    setStatus(contractStatus); 
-
     const summaryData = await summTermsInstance.getSummary();
-    console.log("summaryData", summaryData);
-    console.log("summary1", summaryData[0]);
-    console.log("summary2", summaryData[1]);
-    console.log("summary3", summaryData[2]);
-    console.log("summary4", summaryData[3]);
-    console.log("summary5", summaryData[4]);
-   setSummary({
+
+    setSummary({
       creator: summaryData[0],
       opponent: summaryData[1],
-      totalSoftOfferCap: summaryData[2],
-      totalFirmOfferCap: summaryData[3],
-      softRange: summaryData[4],
-      firmRange: summaryData[5],
-      penaltyPercent: summaryData[6],
+      totalSoftOfferCap: BigNumber.from(summaryData[2].toNumber()),
+      totalFirmOfferCap: BigNumber.from(summaryData[3].toNumber()),
+      softRange: BigNumber.from(summaryData[4].toNumber()),
+      firmRange: BigNumber.from(summaryData[5].toNumber()),
+      penaltyPercent: BigNumber.from(summaryData[6].toNumber()),
       termsStatus: summaryData[7],
     });
-    getInfo(); 
-  }
 
-  function getInfo() {
-    // console.log("status", status);
-    console.log("summary", summary);
+    if (summary.termsStatus !== "" && summary.termsStatus) {
+      let summInstanceAddressVariable = await summTermsInstance.createdSumms(0);
+      summInstanceAddress = summInstanceAddressVariable;
+      setSpecificSummAddress(summInstanceAddress);
+      // console.log(summInstanceAddress);
+      getSummInstance(summInstanceAddress);
+    }
+
+    async function getSummInstance(summInstanceAddress) {
+      // console.log(summInstanceAddress);
+      summInstance = await initializeAndExportSummInstance(summInstanceAddress);
+      // console.log(summInstance);
+      getSummInfo(summInstance);
+    }
+
+    async function getSummInfo(summInstance) {
+      let answer = await summInstance.softRoundActive();
+      setSoftRoundActive(answer);
+      // set amount of soft offers
+      let answer2 = await summInstance.currentSoftGiverOffer();
+      let answer3 = await summInstance.currentSoftReceiverOffer();
+      let answer4 = await summInstance.currentFirmGiverOffer();
+      let answer5 = await summInstance.currentFirmReceiverOffer();
+
+      setCurrentOffers({
+        softReceiverOffer: BigNumber.from(answer3).toNumber(),
+        softGiverOffer: BigNumber.from(answer2).toNumber(),
+        firmReceiverOffer: BigNumber.from(answer5).toNumber(),
+        firmGiverOffer: BigNumber.from(answer4).toNumber(),
+      });
+
+      currentOffers.softReceiverOffer == "undefined" ? setCurrentOffers({softReceiverOffer: 0}) : null;
+      currentOffers.softGiverOffer == "undefined" ? setCurrentOffers({softGiverOffer: 0}) : null;
+      currentOffers.firmReceiverOffer == "undefined" ? setCurrentOffers({firmReceiverOffer: 0}) : null;
+      currentOffers.firmGiverOffer == "undefined" ? setCurrentOffers({firmGiverOffer: 0}) : null;
+
+    
+      // if (account == summary.creator) {
+      //   setcurrentFirmOffer(BigNumber.from(answer4).toNumber());
+      // }
+      // if (account == summary.opponent) {
+      //   setcurrentFirmOffer(BigNumber.from(answer5).toNumber());
+      // }
+    }
+
+    // summaryData[7] !== "" && summaryData[7] ? setAccepted("yes") : null;
   }
 
   return (
     <>
-        <div>
-            <h1>Summ Offers page. where the negotiation happens</h1>
+      {summary.termsStatus !== "" && !summary.termsStatus ? (
+        <div className="flex flex-wrap">
+          <div className="flex flex-wrap">
+            {summary.termsStatus !== "" && !summary.termsStatus ? (
+              <SideBarNegotiation
+                account={account}
+                summary={summary}
+                address={address}
+                SummTerms={SummTerms}
+              />
+            ) : null}
+            <div className="flexParentSumms float-right">
+              <div className="flexChild">
+                {summary.termsStatus !== "" && !summary.termsStatus
+                  ? Object.entries(summary).map(([key, value]) => {
+                      if (value !== false) {
+                        return (
+                          <TermCard
+                            key={key}
+                            value={value.toString()}
+                            termKey={key}
+                            requirementText={false}
+                          />
+                        );
+                      }
+                      return null;
+                    })
+                  : null}
+              </div>
+            </div>
+          </div>
         </div>
-
+      ) : summary.termsStatus !== "" && summary.termsStatus ? (
+        <ActiveOffers
+          summary={summary}
+          account={account}
+          softRoundActive={softRoundActive}
+          currentOffers={currentOffers}
+          specificSummAddress={specificSummAddress}
+        />
+      ) : null}
     </>
-  )
+  );
 }
 
 export async function getServerSideProps({ params }) {
@@ -70,4 +159,4 @@ export async function getServerSideProps({ params }) {
   return { props: { address } };
 }
 
-export default summOffers
+export default summOffers;

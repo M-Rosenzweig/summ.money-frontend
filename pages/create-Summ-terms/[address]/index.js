@@ -6,9 +6,9 @@ import SummFactoryAbi from "../../../constants/SummFactory.json";
 import { ethers } from "ethers";
 
 function createSummTermsV2() {
-  const { chainId, isWeb3Enabled } = useMoralis();
+  const { chainId, isWeb3Enabled, account } = useMoralis();
   const { runContractFunction } = useWeb3Contract();
-  const provider = new ethers.providers.InfuraProvider("goerli");
+  // const provider = new ethers.providers.InfuraProvider("goerli");
 
   const chainString = chainId ? parseInt(chainId).toString() : "31337";
   const summFactoryAddress = networkMapping[chainString].summFactory[0];
@@ -30,6 +30,7 @@ function createSummTermsV2() {
   };
 
   async function handleSubmit(event) {
+    console.log(account); 
     event.preventDefault();
 
     const termDetails = {
@@ -43,6 +44,7 @@ function createSummTermsV2() {
         _softRange: formData.softRange,
         _firmRange: formData.firmRange,
         _penaltyPercent: formData.penaltyPercent,
+        from: account, 
       },
     };
 
@@ -58,7 +60,7 @@ function createSummTermsV2() {
       },
     });
 
-    listenToEvent(); 
+    // listenToEvent(); 
 
     setFormData({
       opponent: "",
@@ -70,12 +72,12 @@ function createSummTermsV2() {
     });
   }
     
-  async function listenToEvent() {
-    const ContractOfSummFactory = new ethers.Contract(summFactoryAddress, SummFactoryAbi, provider);
-    await ContractOfSummFactory.on("NewSumm", (newSummTerms) => {
-      console.log(newSummTerms);
-    });
-  }
+  // async function listenToEvent() {
+  //   const ContractOfSummFactory = new ethers.Contract(summFactoryAddress, SummFactoryAbi, provider);
+  //   await ContractOfSummFactory.on("NewSumm", (newSummTerms) => {
+  //     console.log(newSummTerms);
+  //   });
+  // }
 
   return (
     <>

@@ -4,15 +4,21 @@ import SummRange from "@/components/SummRange";
 import SummAbi from "../constants/Summ.json";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 
-function ActiveOffers({ summary, account, softRoundActive, currentOffers, specificSummAddress }) {
+function ActiveOffers({
+  summary,
+  account,
+  softRoundActive,
+  currentOffers,
+  specificSummAddress,
+  balance,
+}) {
   const [softOfferAmount, setSoftOfferAmount] = useState("");
-  const [currentSoftOfferNumber, setCurrentSoftOfferNumber] = useState("");
-  const [currentFirmOfferNumber, setCurrentFirmOfferNumber] = useState("");
   const [offerAcceptable, setOfferAcceptable] = useState(false);
   const [lowestNumber, setlowestNumber] = useState(0);
   const [highestNumber, sethighestNumber] = useState(0);
   const [currentOffer, setCurrentOffer] = useState("");
   const [functionName, setFunctionName] = useState("");
+  const [DepositAmount, setDepositAmount] = useState("");
 
   const { runContractFunction } = useWeb3Contract();
 
@@ -23,10 +29,14 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
     // console.log(currentSoftOfferNumber);
     // console.log("this is the current offers vibessssssss")
     // console.log(currentOffers);
-  }, [account, currentOffers]);
+    // console.log(specificSummAddress);
+  }, [account, currentOffers, balance]);
 
   async function setInfo() {
+    console.log(balance);
+
     if (account == summary.opponent.toLowerCase() && softRoundActive == true) {
+      // console.log("hello! this should hit")
       setFunctionName("initiateSoftReceiverOffer");
     } else if (account == summary.opponent.toLowerCase() && softRoundActive == false) {
       setFunctionName("initiateFirmReceiverOffer");
@@ -35,12 +45,13 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
     } else if (account == summary.creator.toLowerCase() && softRoundActive == false) {
       setFunctionName("initiateFirmGiverOffer");
     }
+    console.log(`functionName ${functionName}`);
   }
 
   async function handleOfferSubmit(e) {
     e.preventDefault();
-    // console.log("this is the function name Jerryyyy");
-    // console.log(functionName);
+    console.log("this is the function name Jerryyyy");
+    console.log(functionName);
 
     const offerDetails = {
       abi: SummAbi,
@@ -73,6 +84,47 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
     setSoftOfferAmount(offerAmount);
     setCurrentOffer(offerAmount);
   }
+
+  function handleDepositSubmit(e) {
+    e.preventDefault();
+    console.log(`DepositAmount: ${DepositAmount}`);
+
+    const depositParams = {
+      abi: SummAbi,
+      contractAddress: specificSummAddress,
+      functionName: "deposit",
+      msgValue: DepositAmount,
+
+      params: {
+        _amount: DepositAmount,
+      },
+      // from: account,
+    };
+
+    runContractFunction({
+      params: depositParams,
+      onSuccess: (tx) => {
+        alert("Success: You have deposited to your Summ balance.");
+        console.log(`this is a success message: ${tx}`);
+      },
+      onError: (error) => {
+        alert("Error: " + error.message + "");
+        console.log(`this is an error message: ${error}`);
+      },
+    });
+    setDepositAmount("");
+  }
+
+  // const { runContractFunction: buyItem } = useWeb3Contract({
+  //     abi: nftMarketplaceAbi,
+  //     contractAddress: marketplaceAddress,
+  //     functionName: "buyItem",
+  //     msgValue: price,
+  //     params: {
+  //         nftAddress: nftAddress,
+  //         tokenId: tokenId,
+  //     },
+  // })
 
   return (
     <>
@@ -132,16 +184,16 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
               {currentOffer ? (
                 <div className="h-full w-4/5 shadow-md flex flex-col">
                   <div id="scale-in" className="h-1/4">
-                    <h1 className="mt-6 flex justify-start ml-2">
-                      {` The ${
-                        account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"
-                      } Offer Must Be `}
-                    </h1>
                     <h1 className="mt-1 flex justify-start ml-2">
+                      {` Soft Range: ${summary.softRange.toNumber()}%
+                      `}
+                    </h1>
+                    <h1 className="mt-4 flex justify-start ml-2">
                       {` The ${
                         account == summary.creator.toLowerCase() ? "Opponent's" : "Creator's"
                       } Offer Must Be `}
                     </h1>
+
                     <h1 className="mt-1 flex justify-start ml-2">Within The Following Numbers</h1>
                   </div>
                   <div id="scale-in" className="h-2/4 shadow-md flex">
@@ -171,6 +223,7 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
                         } Offer`}
                       </div>
                     ) : null} */}
+
                     {offerAcceptable ? (
                       <button className="bg-blue-500 hover:bg-blue-700 text-white flex justify-center items-center mt-auto mb-auto py-3 px-2 rounded focus:outline-none focus:shadow-sm tline">
                         Accept Offer
@@ -182,6 +235,27 @@ function ActiveOffers({ summary, account, softRoundActive, currentOffers, specif
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex flex-col items-start float-left">
+        <p className="w-fit">Your current balance is {balance} </p>
+
+        <form onSubmit={handleDepositSubmit} className="max-w-sm mx-auto mt-2 ">
+          <div className="flex items-start border-b-2 py-2">
+            <input
+              className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none float-left"
+              type="text"
+              placeholder="Enter Amount"
+              value={DepositAmount}
+              onChange={(event) => setDepositAmount(event.target.value)}
+            />
+            <button
+              className="flex-shrinbg-blue-50 bg-purple-300 hover:text-white hover:bg-purple-700 border-purple-500 hover:border-purple-700 text-sm border-0 p-2 px-2 rounded"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

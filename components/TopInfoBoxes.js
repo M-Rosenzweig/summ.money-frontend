@@ -5,7 +5,22 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    // console.log(currentOffers);
+
+    if(termKey == 'totalSoftOfferCap' || termKey == 'totalFirmOfferCap'){
+      if(currentOffers.firmGiverOffer == ''){
+        currentOffers.firmGiverOffer = 0;
+      }
+      if(currentOffers.firmReceiverOffer == ''){
+        currentOffers.firmReceiverOffer = 0;
+      }
+      if(currentOffers.softGiverOffer == ''){
+        currentOffers.softGiverOffer = 0;
+      }
+      if(currentOffers.softReceiverOffer == ''){
+        currentOffers.softReceiverOffer = 0;
+      }
+    }
+
     if (termKey == "opponent") {
       if (account == value.toLowerCase()) {
         setTitle("You");
@@ -42,12 +57,12 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
 
   let ternaryValueOfferStatus = 
     termKey == "totalSoftOfferCap"  ?  
-    `${currentOffers.softGiverOffer} / ${value} | ${currentOffers.softReceiverOffer} / ${value}` :
+    `${currentOffers.softReceiverOffer} / ${value} | ${currentOffers.softGiverOffer} / ${value}` :
     ternaryValuePercent;
     
   let ternaryValueOfferStatus2 = 
   termKey == "totalFirmOfferCap"  ?
-  `${currentOffers.firmGiverOffer} / ${value} | ${currentOffers.firmReceiverOffer} / ${value}` :
+  `${currentOffers.firmReceiverOffer} / ${value} | ${currentOffers.firmGiverOffer} / ${value}` :
   ternaryValueOfferStatus;
 
   //   termKey == "totalSoftOfferCap"

@@ -30,10 +30,9 @@ function ActiveOffers({
     // console.log("this is the current offers vibessssssss")
     // console.log(currentOffers);
     // console.log(specificSummAddress);
-  }, [account, currentOffers, balance]);
+  }, [account, currentOffers, balance, softRoundActive]);
 
   async function setInfo() {
-    console.log(balance);
 
     if (account == summary.opponent.toLowerCase() && softRoundActive == true) {
       // console.log("hello! this should hit")
@@ -50,8 +49,8 @@ function ActiveOffers({
 
   async function handleOfferSubmit(e) {
     e.preventDefault();
-    console.log("this is the function name Jerryyyy");
-    console.log(functionName);
+    // console.log("this is the function name Jerryyyy");
+    // console.log(functionName);
 
     const offerDetails = {
       abi: SummAbi,
@@ -87,7 +86,6 @@ function ActiveOffers({
 
   function handleDepositSubmit(e) {
     e.preventDefault();
-    console.log(`DepositAmount: ${DepositAmount}`);
 
     const depositParams = {
       abi: SummAbi,
@@ -139,6 +137,7 @@ function ActiveOffers({
                   value={value.toString()}
                   account={account}
                   currentOffers={currentOffers}
+                  softRoundActive={softRoundActive}
                 />
               );
             }

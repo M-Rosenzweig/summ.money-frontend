@@ -13,7 +13,7 @@ function summOffers({ address }) {
   const { isWeb3Enabled, account } = useMoralis();
   const [softRoundActive, setSoftRoundActive] = useState("unaware");
   const [specificSummAddress, setSpecificSummAddress] = useState("");
-  const [balance, setBalance] = useState('');
+  const [balance, setBalance] = useState("");
   const [currentOffers, setCurrentOffers] = useState({
     softReceiverOffer: "",
     softGiverOffer: "",
@@ -86,12 +86,11 @@ function summOffers({ address }) {
       let answer3 = await summInstance.currentSoftReceiverOffer();
       let answer4 = await summInstance.currentFirmGiverOffer();
       let answer5 = await summInstance.currentFirmReceiverOffer();
-      console.log(summInstance);
-      console.log(`answer2: ${answer2}`);
-      console.log(`answer3: ${answer3}`);
-      console.log(`answer4: ${answer4}`);
-      console.log(`answer5: ${answer5}`);
-
+      // console.log(summInstance);
+      // console.log(`answer2: ${answer2}`);
+      // console.log(`answer3: ${answer3}`);
+      // console.log(`answer4: ${answer4}`);
+      // console.log(`answer5: ${answer5}`);
 
       setCurrentOffers({
         softReceiverOffer: BigNumber.from(answer3).toNumber(),

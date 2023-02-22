@@ -1,22 +1,35 @@
 import { AccordionSummary } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-function TopInfoBoxes({ termKey, value, account, currentOffers }) {
+function TopInfoBoxes({ termKey, value, account, currentOffers, softRoundActive }) {
   const [title, setTitle] = useState("");
+  const [focus, setFocus] = useState("");
 
   useEffect(() => {
+    if (termKey == "totalSoftOfferCap") {
+      if (softRoundActive == true) {
+        setFocus("bg-purple-100");
+        // console.log("s")
+      }
+    }
+    if (termKey == "totalFirmOfferCap") {
+      if (softRoundActive == false) {
+        setFocus("bg-purple-100");
+        // console.log('f')
+      }
+    }
 
-    if(termKey == 'totalSoftOfferCap' || termKey == 'totalFirmOfferCap'){
-      if(currentOffers.firmGiverOffer == ''){
+    if (termKey == "totalSoftOfferCap" || termKey == "totalFirmOfferCap") {
+      if (currentOffers.firmGiverOffer == "") {
         currentOffers.firmGiverOffer = 0;
       }
-      if(currentOffers.firmReceiverOffer == ''){
+      if (currentOffers.firmReceiverOffer == "") {
         currentOffers.firmReceiverOffer = 0;
       }
-      if(currentOffers.softGiverOffer == ''){
+      if (currentOffers.softGiverOffer == "") {
         currentOffers.softGiverOffer = 0;
       }
-      if(currentOffers.softReceiverOffer == ''){
+      if (currentOffers.softReceiverOffer == "") {
         currentOffers.softReceiverOffer = 0;
       }
     }
@@ -44,7 +57,7 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
         setTitle("Creator");
       }
     }
-  }, [termKey, account]);
+  }, [termKey, account, softRoundActive]);
 
   let ternaryValue =
     termKey == "opponent" || termKey == "creator"
@@ -55,15 +68,15 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
       ? ternaryValue + "%"
       : ternaryValue;
 
-  let ternaryValueOfferStatus = 
-    termKey == "totalSoftOfferCap"  ?  
-    `${currentOffers.softReceiverOffer} / ${value} | ${currentOffers.softGiverOffer} / ${value}` :
-    ternaryValuePercent;
-    
-  let ternaryValueOfferStatus2 = 
-  termKey == "totalFirmOfferCap"  ?
-  `${currentOffers.firmReceiverOffer} / ${value} | ${currentOffers.firmGiverOffer} / ${value}` :
-  ternaryValueOfferStatus;
+  let ternaryValueOfferStatus =
+    termKey == "totalSoftOfferCap"
+      ? `${currentOffers.softReceiverOffer} / ${value} | ${currentOffers.softGiverOffer} / ${value}`
+      : ternaryValuePercent;
+
+  let ternaryValueOfferStatus2 =
+    termKey == "totalFirmOfferCap"
+      ? `${currentOffers.firmReceiverOffer} / ${value} | ${currentOffers.firmGiverOffer} / ${value}`
+      : ternaryValueOfferStatus;
 
   //   termKey == "totalSoftOfferCap"
   //     ? currentSoftOfferNumber + " / " + ternaryValuePercent
@@ -74,7 +87,7 @@ function TopInfoBoxes({ termKey, value, account, currentOffers }) {
   //     : ternaryValueOfferStatus;
 
   return (
-    <div className="m-8 bg-blue-50 p-4 rounded-lg shadow-md">
+    <div className={`m-8 bg-blue-50 p-4 rounded-lg shadow-md ${focus}`}>
       <p>{title}</p>
       <p className="text-center">{ternaryValueOfferStatus2}</p>
     </div>
